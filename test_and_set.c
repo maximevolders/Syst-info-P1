@@ -1,25 +1,15 @@
 #include <stdio.h>
 volatile int verrou=0;
 
-/*
-void enter(){
+void lock(){
 	int test=1;
 	do{
-		int a = test;
-		test = verrou;
-		verrou = a;
+		asm("movl %1, %%eax;"
+			"xchgl %0, %%eax;"
+			"movl %%eax, %1;"
+			:"+r" (verrou), "+r" (test)
+			);
 	} while(test == 1);
-}
-*/
-
-void lock(){
-	asm("loop:"
-		"movl $1, %%eax;"
-		"xchgl %%eax, %0;"
- 		"testl %%eax, %%eax;"
-		"jne loop;"
-		:"=&r"(verrou)
-		);
 }
 
 void unlock(){
