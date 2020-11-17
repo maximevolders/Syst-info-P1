@@ -1,13 +1,25 @@
 #include <stdio.h>
-int verrou=0;
+volatile int verrou=0;
+
+/*
+void enter(){
+	int test=1;
+	do{
+		int a = test;
+		test = verrou;
+		verrou = a;
+	} while(test == 1);
+}
+*/
 
 void lock(){
 	asm("loop:"
 		"movl $1, %%eax;"
 		"xchgl %%eax, %0;"
-		"testl %%eax, %%eax;"
-		"jnz loop;"
-		:"=&r"(verrou));
+ 		"testl %%eax, %%eax;"
+		"jne loop;"
+		:"=&r"(verrou)
+		);
 }
 
 void unlock(){
