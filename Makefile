@@ -22,6 +22,3 @@ lect_ecrv: lecteurs_ecrivains.c
 
 clean:
 		rm -rf philo lect_ecrv prod_cons
-		
-graph:
-		python3 graph.py

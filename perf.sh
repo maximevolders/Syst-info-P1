@@ -18,4 +18,4 @@ do
     done
 done
 
-#python3 graph.py 2> /dev/null
+python3 graph.py 2> /dev/null
