@@ -5,11 +5,10 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 
-all: philo prod_cons lect_ecrv
+all: philo prod_cons lect_ecrv test_and_set test_and_test_and_set
 
 test: philo prod_cons lect_ecrv
 		./perf.sh
-		graph
 
 philo: philosophes.c
 		$(CC) philosophes.c -pthread -o philo $(CFLAGS)
@@ -19,6 +18,15 @@ prod_cons: producteurs_consommateurs.c
 
 lect_ecrv: lecteurs_ecrivains.c
 		$(CC) lecteurs_ecrivains.c -pthread -o lect_ecrv $(CFLAGS)
+		
+verrou: test_and_set test_and_test_and_set
+		./perf_tas.sh
+	
+test_and_set: test_and_set.c
+		$(CC) test_and_set.c -pthread -o test_and_set $(CFLAGS)
+		
+test_and_test_and_set: verrou.c
+		$(CC) verrou.c -pthread -o test_and_test_and_set $(CFLAGS)
 
 clean:
-		rm -rf philo lect_ecrv prod_cons
+		rm -rf philo lect_ecrv prod_cons test_and_set test_and_test_and_set
