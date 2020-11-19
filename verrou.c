@@ -5,19 +5,31 @@
 #include <string.h>
 
 volatile int verrou=0;
-/* int N;
+int N;
+/*struct sema{
+	int val;
+};
+struct sema *semaphore; */
 
 void error(int err, char *msg) {
     fprintf(stderr,"%s a retourné %d message d'erreur : %s\n",msg,err,strerror(errno));
     exit(EXIT_FAILURE);
+}
+
+/* int init(struct sema *sem, unsigned int value){
+	printf("Dans init\n");
+	sem->val=value;
+	return 0;
 } */
 
 int testAndSet(){
 	int test=1;
-	asm("movl %1, %%eax;"
-		"xchgl %0, %%eax;"
+		asm("movl $1, %%eax;"
+		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+r" (verrou), "+r" (test)
+		:"+m" (verrou), "=r" (test) /* paramètres de sortie */
+		: /* paramètres d'entrée */
+		:"%eax" /* registres modifiés */
 		);
 	return test;
 }
@@ -25,37 +37,56 @@ int testAndSet(){
 void lock(){
 	do{
 		while(verrou == 1);
-	} while(testAndSet());
+	} while(testAndSet() == 1);
 }
 
 void unlock(){
-	asm("movl $0, %%eax;"
-		"xchgl %%eax, %0;"
-		:"=&r"(verrou));
+	verrou = 0;
 }
 /*
-void* test(){
-	for(int i=0; i<6400/N; i++){
+void wait(struct sema *s){
+	*(s->val) = *(s->val)-1;
+	if(*(s->val)<0)
 		lock();
+}
+
+void post(struct sema *s){
+	*(s->val) = *(s->val)+1;
+	if(*(s->val)<=0)
+		unlock();
+} */
+
+void* test(){
+	for(int i=0; i<6/N; i++){
+		lock();
+		int j=0;
 		while(rand() > RAND_MAX/1000);
+		while(j<9){
+			printf("%d", j);
+			j++;
+		}
+		printf("\n");
 		unlock();
 	}
 	return (NULL);
-} */
+}
 
 int main(int argc, char *argv[]){
-	printf("Verrou avant lock: %d\n", verrou);
-	lock();
-	printf("Verrou après lock: %d\n", verrou);
-	unlock();
-	printf("Verrou après unlock: %d\n", verrou); 
-	/*
+	// printf("Verrou avant lock: %d\n", verrou);
+	// lock();
+	// printf("Verrou après lock: %d\n", verrou);
+	// unlock();
+	// printf("Verrou après unlock: %d\n", verrou); 
+	
 	int err;
 	
 	if(argc != 2) return (EXIT_FAILURE);
 	N = atoi(argv[1]); // Nombre de threads
-	
+
 	pthread_t thread[N];
+	/* printf("Avant init\n");
+	err=init(semaphore, 0);
+	printf("Après init\n"); */
 	
     for (int i=0; i<N; i++) { // On crée les threads
         err=pthread_create(&(thread[i]),NULL,test,NULL);
@@ -67,6 +98,6 @@ int main(int argc, char *argv[]){
 		err=pthread_join(thread[i],NULL);
         if(err!=0)
             error(err,"pthread_join");
-	} */
+	} 
 	return (EXIT_SUCCESS);
 }

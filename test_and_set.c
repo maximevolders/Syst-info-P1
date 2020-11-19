@@ -12,20 +12,28 @@ void error(int err, char *msg) {
     exit(EXIT_FAILURE);
 }
 
+
 void lock(){
-	do{
-		asm("movl %1, %%eax;"
-		"xchgl %0, %%eax;"
+	int test=1;
+	while(test){
+		asm("movl $1, %%eax;"
+		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+r" (verrou), "+r" (test)
+		:"+m" (verrou), "=r" (test) /* paramètres de sortie */
+		: /* paramètres d'entrée */
+		:"%eax" /* registres modifiés */
 		);
-	} while(test == 1);
+	}
 }
 
 void unlock(){
-	asm("movl $0, %%eax;"
-		"xchgl %%eax, %0;"
-		:"=&r"(verrou));
+	// asm("movl $0, %%eax;"
+	// "xchgl %%eax, %0;"
+	// :"+r" (verrou) /* paramètres de sortie */
+	// : /* paramètre d'entrée */
+	// :"%eax" /* registres modifiés */
+	// );
+	verrou = 0;
 }
 
 void* test(){
@@ -45,7 +53,7 @@ int main(int argc, char *argv[]){
 	
 	pthread_t thread[N];
 	
-    for (int i=0; i<N; i++) { // On crée les threads
+	for (int i=0; i<N; i++) { // On crée les threads
         err=pthread_create(&(thread[i]),NULL,test,NULL);
         if(err!=0)
             error(err,"pthread_create");
