@@ -15,7 +15,7 @@
 #include <errno.h>
 #include <string.h>
 
-#define MAX 10000
+#define MAX 1000000
 
 int PHILOSOPHES; // Nombre de philosophes
 
