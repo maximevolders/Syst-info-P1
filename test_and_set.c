@@ -12,7 +12,6 @@ void error(int err, char *msg) {
     exit(EXIT_FAILURE);
 }
 
-
 void lock(){
 	int test=1;
 	while(test){
@@ -27,12 +26,6 @@ void lock(){
 }
 
 void unlock(){
-	// asm("movl $0, %%eax;"
-	// "xchgl %%eax, %0;"
-	// :"+r" (verrou) /* paramètres de sortie */
-	// : /* paramètre d'entrée */
-	// :"%eax" /* registres modifiés */
-	// );
 	verrou = 0;
 }
 
