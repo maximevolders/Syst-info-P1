@@ -59,10 +59,11 @@ void* writer(){
 		// mut_lock(&mutex_writecount); // ATTENTE ACTIVE
 		
 		writecount++;
-		if(writecount == 1)
+		if(writecount == 1){
 			// rsem N+1​​​​​
 			sem_wait(&rsem); // POSIX
 			// sema_wait(&rsem); // ATTENTE ACTIVE
+		}
 			
 		pthread_mutex_unlock(&mutex_writecount); // POSIX
 		// mut_unlock(&mutex_writecount); // ATTENTE ACTIVE
@@ -83,9 +84,10 @@ void* writer(){
 		// mut_lock(&mutex_writecount); // ATTENTE ACTIVE
 		
 		writecount--;
-		if(writecount == 0)
+		if(writecount == 0){
 			sem_post(&rsem); // POSIX
 			// sema_post(&rsem); // ATTENTE ACTIVE
+		}
 			
 		pthread_mutex_unlock(&mutex_writecount); // POSIX
 		// mut_unlock(&mutex_writecount); // ATTENTE ACTIVE
@@ -105,9 +107,10 @@ void* reader(){
 		
 		// section critique
 		readcount++;
-		if(readcount==1) // arrivée du premier reader
+		if(readcount==1){ // arrivée du premier reader
 			sem_wait(&wsem); // POSIX
 			// sema_wait(&wsem); // ATTENTE ACTIVE
+		}
 			
 		pthread_mutex_unlock(&mutex_readcount); // POSIX
 		// mut_unlock(&mutex_readcount); // ATTENTE ACTIVE
@@ -115,7 +118,7 @@ void* reader(){
 		sem_post(&rsem); // POSIX
 		// sema_post(&rsem); // ATTENTE ACTIVE
 		
-		if(nombre_lect+readcount-1<MAX_LECT && nombre_write>0){
+		if(nombre_lect+readcount-1<MAX_LECT){
 			// 1 reader rsem 1
 			read_database();
 			
@@ -124,6 +127,7 @@ void* reader(){
 			
 			// section critique
 			nombre_lect++;
+			printf("%d\t", nombre_lect);
 			pthread_mutex_unlock(&mutex_lect); // POSIX
 			// mut_unlock(&mutex_lect); // ATTENTE ACTIVE
 		}
@@ -132,10 +136,10 @@ void* reader(){
 		
 		// section critique
 		readcount--;
-		if(readcount==0) // départ du dernier reader
+		if(readcount==0){ // départ du dernier reader
 			sem_post(&wsem); // POSIX
 			// sema_post(&wsem); // ATTENTE ACTIVE
-		
+		}
 		pthread_mutex_unlock(&mutex_readcount); // POSIX
 		// mut_unlock(&mutex_readcount); // ATTENTE ACTIVE
 		//process_data();

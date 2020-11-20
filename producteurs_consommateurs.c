@@ -165,6 +165,7 @@ int main(int argc, char *argv[]){
 	if(argc != 2) return EXIT_FAILURE;
 	
 	int producteurs = atoi(argv[1])/2; // Nombre de producteurs
+	if(producteurs == 0) producteurs++;
 	
 	int consommateurs = atoi(argv[1])/2; // Nombre de consommateurs
 	if(atoi(argv[1])%2) consommateurs++;
