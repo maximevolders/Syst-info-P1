@@ -6,10 +6,20 @@
 
 volatile int verrou=0;
 int N;
+struct sema{
+	int val;
+};
+struct sema semaphore;
 
 void error(int err, char *msg) {
     fprintf(stderr,"%s a retourné %d message d'erreur : %s\n",msg,err,strerror(errno));
     exit(EXIT_FAILURE);
+}
+
+int init(struct sema sem, unsigned int value){
+	printf("Dans init\n");
+	sem.val=value;
+	return 0;
 }
 
 int testAndSet(){
@@ -34,9 +44,21 @@ void unlock(){
 	verrou = 0;
 }
 
+void wait(struct sema *s){
+	s->val = (s->val)-1;
+	if((s->val)<0)
+		lock();
+}
+
+void post(struct sema *s){
+	s->val = (s->val)+1;
+	if((s->val)<=0)
+		unlock();
+}
+
 void* test(){
 	for(int i=0; i<6400/N; i++){
-		lock();
+		wait(&semaphore);
 		int j=0;
 		while(rand() > RAND_MAX/1000);
 		while(j<9){
@@ -44,7 +66,7 @@ void* test(){
 			j++;
 		}
 		printf("\n");
-		unlock();
+		post(&semaphore);
 	}
 	return (NULL);
 }
@@ -56,6 +78,9 @@ int main(int argc, char *argv[]){
 	N = atoi(argv[1]); // Nombre de threads
 
 	pthread_t thread[N];
+	printf("Avant init\n");
+	err=init(semaphore, 0);
+	printf("Après init\n");
 	
     for (int i=0; i<N; i++) { // On crée les threads
         err=pthread_create(&(thread[i]),NULL,test,NULL);
