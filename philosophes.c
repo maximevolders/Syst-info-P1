@@ -16,9 +16,10 @@
 #include <string.h>
 #include "test_and_test_and_set.h"
 
-#define MAX 10
+#define MAX 1000000
 
 int PHILOSOPHES; // Nombre de philosophes
+int nbag; //Nombre de baguettes
 
 struct multArg{ // Structure pour pouvoir avoir accès aux baguettes globalement
     // pthread_mutex_t* baguette; //POSIX
@@ -38,7 +39,7 @@ void* philosophe( void* arg )
 
     int *id= (int *)arg;
     int left = *id;
-    int right = (left + 1) % PHILOSOPHES;
+    int right = (left + 1) % nbag;
     int i =0;
     while(i<MAX) { // Les philosophes doivent faire 1.000.000 cycles manger/penser
         // Philosophe pense
@@ -74,9 +75,9 @@ int main ( int argc, char *argv[])
     int i;
 	if(argc != 2) return EXIT_FAILURE;
 	PHILOSOPHES = atoi(argv[1]);
-	int nbag = PHILOSOPHES;
+	nbag = PHILOSOPHES;
 	if(PHILOSOPHES == 1){
-		nbag = nbag+1;
+	  nbag = 2;
 	}
     // Mutex pour toutes les baguettes
 	// pthread_mutex_t z[nbag]; //POSIX
@@ -93,7 +94,7 @@ int main ( int argc, char *argv[])
     for (i = 0; i < PHILOSOPHES; i++) // Donne un id a chaque philosophe
         id[i]=i;
 
-    for (i = 0; i < PHILOSOPHES; i++) {// Initialise et Unlock les mutex
+    for (i = 0; i < nbag; i++) {// Initialise et Unlock les mutex
         // err=pthread_mutex_init(bag.baguette+i, NULL); //POSIX
         err=mut_init(bag.baguette+i); //ATTENTE ACTIVE
         if(err!=0)
