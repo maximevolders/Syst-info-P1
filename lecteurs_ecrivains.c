@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include "test_and_test_and_set.h"
+#include "semaphore.h"
 
 #define MAX_LECT 2560
 #define MAX_WRITE 640
@@ -105,13 +107,12 @@ void* reader(){
 int main(int argc, char *argv[]){
 	int err;
 	
-	if(argc != 3) return EXIT_FAILURE;
+	if(argc != 2) return EXIT_FAILURE;
 	
-	int ecrivains = atoi(argv[1]); // Nombre de ecrivains
-	if(ecrivains%2) ecrivains++;
+	int ecrivains = atoi(argv[1])/2; // Nombre de ecrivains
 	
-	int lecteurs = atoi(argv[2]); // Nombre de lecteurs
-	if(lecteurs%2) lecteurs++;
+	int lecteurs = atoi(argv[1])/2; // Nombre de lecteurs
+	if(atoi(argv[1])%2) lecteurs++;
 	
 	pthread_mutex_init(&mutex_writecount,NULL);
 	pthread_mutex_init(&mutex_readcount,NULL);

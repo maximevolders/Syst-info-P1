@@ -1,64 +1,56 @@
-#include <stdio.h>
-#include <errno.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <string.h>
+#include "semaphore.h"
 
-volatile int verrou=0;
 int N;
-struct sema{
-	int val;
-};
-struct sema semaphore;
 
-void error(int err, char *msg) {
-    fprintf(stderr,"%s a retourné %d message d'erreur : %s\n",msg,err,strerror(errno));
-    exit(EXIT_FAILURE);
-}
+struct sema mute;
+struct sema mute2;
 
-int init(struct sema sem, unsigned int value){
-	printf("Dans init\n");
-	sem.val=value;
+int sema_init(struct sema *s, unsigned int value){
+	s->val=value;
+	s->verrou = 1;
 	return 0;
 }
 
-int testAndSet(){
+int sema_testAndSet(struct sema *s){
 	int test=1;
 		asm("movl $1, %%eax;"
 		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+m" (verrou), "=r" (test) /* paramètres de sortie */
+		:"+m" (s->verrou), "=r" (test) /* paramètres de sortie */
 		: /* paramètres d'entrée */
 		:"%eax" /* registres modifiés */
 		);
 	return test;
 }
 
-void lock(){
+void sema_lock(struct sema *s){
 	do{
-		while(verrou == 1);
-	} while(testAndSet() == 1);
+		while(s->verrou == 1);
+	} while(sema_testAndSet(s) == 1);
 }
 
-void unlock(){
-	verrou = 0;
+void sema_unlock(struct sema *s){
+	s->verrou = 0;
 }
 
-void wait(struct sema *s){
+void sema_wait(struct sema *s){
 	s->val = (s->val)-1;
 	if((s->val)<0)
-		lock();
+		sema_lock(s);
 }
 
-void post(struct sema *s){
+void sema_post(struct sema *s){
 	s->val = (s->val)+1;
 	if((s->val)<=0)
-		unlock();
+		sema_unlock(s);
 }
 
-void* test(){
-	for(int i=0; i<6400/N; i++){
-		wait(&semaphore);
+
+
+
+void* test1(){
+	for(int i=0; i<64/N; i++){
+		sema_wait(&mute);
 		int j=0;
 		while(rand() > RAND_MAX/1000);
 		while(j<9){
@@ -66,11 +58,27 @@ void* test(){
 			j++;
 		}
 		printf("\n");
-		post(&semaphore);
+		sema_post(&mute);
 	}
 	return (NULL);
 }
 
+void* test2(){
+	for(int i=0; i<64/N; i++){
+		sema_wait(&mute);
+		int j=0;
+		while(rand() > RAND_MAX/1000);
+		while(j>-9){
+			printf("%d", j);
+			j--;
+		}
+		printf("\n");
+		sema_post(&mute);
+	}
+	return (NULL);
+}
+/* POUR LES TESTS */
+/*
 int main(int argc, char *argv[]){
 	int err;
 	
@@ -78,20 +86,19 @@ int main(int argc, char *argv[]){
 	N = atoi(argv[1]); // Nombre de threads
 
 	pthread_t thread[N];
-	printf("Avant init\n");
-	err=init(semaphore, 0);
-	printf("Après init\n");
+	
+	sema_init(&mute, 0);
+	sema_init(&mute2, 0);
 	
     for (int i=0; i<N; i++) { // On crée les threads
-        err=pthread_create(&(thread[i]),NULL,test,NULL);
-        if(err!=0)
-            error(err,"pthread_create");
+		if(i<N/2)
+			err=pthread_create(&(thread[i]),NULL,test1,NULL);
+		else
+			err=pthread_create(&(thread[i]),NULL,test2,NULL);
     }
 	
 	for(int i=0; i<N; i++) { // On attend que les threads se terminent
 		err=pthread_join(thread[i],NULL);
-        if(err!=0)
-            error(err,"pthread_join");
 	} 
 	return (EXIT_SUCCESS);
-}
+} */

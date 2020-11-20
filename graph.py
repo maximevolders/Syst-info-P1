@@ -14,8 +14,8 @@ def philosophes():
     
     fig1 = plt.figure()
     
-    plt.plot(threads, mean, color="green", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="green")
+    plt.plot(threads, mean, color="blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="blue")
     
     plt.xlim(0,np.max(data["thread"])+1)
     plt.ylim(0,np.max(data["time"])+1)
@@ -68,8 +68,8 @@ def read_write():
     
     fig1 = plt.figure()
     
-    plt.plot(threads, mean, color="red", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="red")
+    plt.plot(threads, mean, color="blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="blue")
     
     plt.xlim(0,np.max(data["thread"])+1)
     plt.ylim(0,np.max(data["time"])+1)

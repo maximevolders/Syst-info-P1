@@ -1,42 +1,39 @@
-#include <stdio.h>
-#include <errno.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <string.h>
+#include "test_and_test_and_set.h"
 
-volatile int verrou=0;
 int N;
 
-void error(int err, char *msg) {
-    fprintf(stderr,"%s a retourné %d message d'erreur : %s\n",msg,err,strerror(errno));
-    exit(EXIT_FAILURE);
+struct mut mute;
+
+int mut_init(struct mut *mu){
+	mu->verrou=0;
+	return 0;
 }
 
-int testAndSet(){
+int mut_testAndSet(struct mut *mu){
 	int test=1;
 		asm("movl $1, %%eax;"
 		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+m" (verrou), "=r" (test) /* paramètres de sortie */
+		:"+m" (mu->verrou), "=r" (test) /* paramètres de sortie */
 		: /* paramètres d'entrée */
 		:"%eax" /* registres modifiés */
 		);
 	return test;
 }
 
-void lock(){
+void mut_lock(struct mut *mu){
 	do{
-		while(verrou == 1);
-	} while(testAndSet() == 1);
+		while(mu->verrou == 1);
+	} while(mut_testAndSet(mu) == 1);
 }
 
-void unlock(){
-	verrou = 0;
+void mut_unlock(struct mut *mu){
+	mu->verrou = 0;
 }
 
 void* test(){
 	for(int i=0; i<6400/N; i++){
-		lock();
+		mut_lock(&mute);
 		int j=0;
 		while(rand() > RAND_MAX/1000);
 		while(j<9){
@@ -44,11 +41,11 @@ void* test(){
 			j++;
 		}
 		printf("\n");
-		unlock();
+		mut_unlock(&mute);
 	}
 	return (NULL);
 }
-
+/* POUR LES TESTS
 int main(int argc, char *argv[]){
 	int err;
 	
@@ -56,6 +53,8 @@ int main(int argc, char *argv[]){
 	N = atoi(argv[1]); // Nombre de threads
 
 	pthread_t thread[N];
+	
+	init(mute);
 	
     for (int i=0; i<N; i++) { // On crée les threads
         err=pthread_create(&(thread[i]),NULL,test,NULL);
@@ -69,4 +68,4 @@ int main(int argc, char *argv[]){
             error(err,"pthread_join");
 	} 
 	return (EXIT_SUCCESS);
-}
+} */

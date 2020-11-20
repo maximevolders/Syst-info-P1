@@ -15,4 +15,4 @@ do
     done
 done
 
-python3 graph_tas.py 2> /dev/null
+#python3 graph_tas.py 2> /dev/null
