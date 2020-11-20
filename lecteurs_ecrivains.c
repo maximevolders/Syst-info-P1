@@ -28,12 +28,12 @@ pthread_mutex_t mutex_lect;
 sem_t wsem;  // accès à la semaphore writer
 sem_t rsem; // accès à la semaphore reader
 
-/* ATTENTE ACTIVE */
+/* ATTENTE ACTIVE */ /*
 struct mut mutex_writecount;
 struct mut mutex_readcount;
 struct mut mutex_lect;
 struct sema wsem; // accès à la semaphore writer
-struct sema rsem; // accès à la semaphore reader
+struct sema rsem; // accès à la semaphore reader */
 
 int readcount=0; // nombre de readers
 int writecount=0; // nombre d'écrivains
@@ -56,20 +56,20 @@ void read_database(){
 void* writer(){
 	while(nombre_write<MAX_WRITE){
 		pthread_mutex_lock(&mutex_writecount); // POSIX
-		mut_lock(&mutex_writecount); // ATTENTE ACTIVE
+		// mut_lock(&mutex_writecount); // ATTENTE ACTIVE
 		
 		writecount++;
 		if(writecount == 1)
 			// rsem N+1​​​​​
 			sem_wait(&rsem); // POSIX
-			sema_wait(&rsem); // ATTENTE ACTIVE
+			// sema_wait(&rsem); // ATTENTE ACTIVE
 			
 		pthread_mutex_unlock(&mutex_writecount); // POSIX
-		mut_unlock(&mutex_writecount); // ATTENTE ACTIVE
+		// mut_unlock(&mutex_writecount); // ATTENTE ACTIVE
 		
 		// WRITER SEM_WAIT
 		sem_wait(&wsem); // POSIX
-		sema_wait(&wsem); // ATTENTE ACTIVE
+		// sema_wait(&wsem); // ATTENTE ACTIVE
 		
 		// section critique, un seul writer à la fois
 		if(nombre_write+writecount-1<MAX_WRITE){
@@ -77,18 +77,18 @@ void* writer(){
 			nombre_write++;
 		}
 		sem_post(&wsem); // POSIX
-		sema_post(&wsem); // ATTENTE ACTIVE
+		// sema_post(&wsem); // ATTENTE ACTIVE
 		
 		pthread_mutex_lock(&mutex_writecount); // POSIX
-		mut_lock(&mutex_writecount); // ATTENTE ACTIVE
+		// mut_lock(&mutex_writecount); // ATTENTE ACTIVE
 		
 		writecount--;
 		if(writecount == 0)
 			sem_post(&rsem); // POSIX
-			sema_post(&rsem); // ATTENTE ACTIVE
+			// sema_post(&rsem); // ATTENTE ACTIVE
 			
 		pthread_mutex_unlock(&mutex_writecount); // POSIX
-		mut_unlock(&mutex_writecount); // ATTENTE ACTIVE
+		// mut_unlock(&mutex_writecount); // ATTENTE ACTIVE
 	}
 	return (NULL);
 }
@@ -97,47 +97,47 @@ void* reader(){
 	while(nombre_lect<MAX_LECT){
 		// ne sera jamais > 1
 		sem_wait(&rsem); // POSIX
-		sema_wait(&rsem); // ATTENTE ACTIVE
+		// sema_wait(&rsem); // ATTENTE ACTIVE
 		
 		
 		pthread_mutex_lock(&mutex_readcount); // POSIX
-		mut_lock(&mutex_readcount); // ATTENTE ACTIVE
+		// mut_lock(&mutex_readcount); // ATTENTE ACTIVE
 		
 		// section critique
 		readcount++;
 		if(readcount==1) // arrivée du premier reader
 			sem_wait(&wsem); // POSIX
-			sema_wait(&wsem); // ATTENTE ACTIVE
+			// sema_wait(&wsem); // ATTENTE ACTIVE
 			
 		pthread_mutex_unlock(&mutex_readcount); // POSIX
-		mut_unlock(&mutex_readcount); // ATTENTE ACTIVE
+		// mut_unlock(&mutex_readcount); // ATTENTE ACTIVE
 		
 		sem_post(&rsem); // POSIX
-		sema_post(&rsem); // ATTENTE ACTIVE
+		// sema_post(&rsem); // ATTENTE ACTIVE
 		
 		if(nombre_lect+readcount-1<MAX_LECT && nombre_write>0){
 			// 1 reader rsem 1
 			read_database();
 			
 			pthread_mutex_lock(&mutex_lect); // POSIX
-			mut_lock(&mutex_lect); // ATTENTE ACTIVE
+			// mut_lock(&mutex_lect); // ATTENTE ACTIVE
 			
 			// section critique
 			nombre_lect++;
 			pthread_mutex_unlock(&mutex_lect); // POSIX
-			mut_unlock(&mutex_lect); // ATTENTE ACTIVE
+			// mut_unlock(&mutex_lect); // ATTENTE ACTIVE
 		}
 		pthread_mutex_lock(&mutex_readcount); // POSIX
-		mut_lock(&mutex_readcount); // ATTENTE ACTIVE
+		// mut_lock(&mutex_readcount); // ATTENTE ACTIVE
 		
 		// section critique
 		readcount--;
 		if(readcount==0) // départ du dernier reader
 			sem_post(&wsem); // POSIX
-			sema_post(&wsem); // ATTENTE ACTIVE
+			// sema_post(&wsem); // ATTENTE ACTIVE
 		
 		pthread_mutex_unlock(&mutex_readcount); // POSIX
-		mut_unlock(&mutex_readcount); // ATTENTE ACTIVE
+		// mut_unlock(&mutex_readcount); // ATTENTE ACTIVE
 		//process_data();
 	}
 	return (NULL);
@@ -160,12 +160,12 @@ int main(int argc, char *argv[]){
 	sem_init(&wsem, 0, 1);
 	sem_init(&rsem, 0, 1);
 	
-	/* ATTENTE ACTIVE */
+	/* ATTENTE ACTIVE 
 	mut_init(&mutex_writecount);
 	mut_init(&mutex_readcount);
 	mut_init(&mutex_lect);
 	sema_init(&wsem, 1);
-	sema_init(&rsem, 1);
+	sema_init(&rsem, 1); */
 	
 	pthread_t lect[lecteurs]; // Un thread par lecteur
 	pthread_t ecrv[ecrivains]; // Un thread par écrivain

@@ -1,8 +1,8 @@
 #include "test_and_test_and_set.h"
 
-int N;
+// int N;
 
-struct mut mute;
+// struct mut mute;
 
 int mut_init(struct mut *mu){
 	mu->verrou=0;
@@ -30,7 +30,7 @@ void mut_lock(struct mut *mu){
 void mut_unlock(struct mut *mu){
 	mu->verrou = 0;
 }
-
+/*
 void* test(){
 	for(int i=0; i<6400/N; i++){
 		mut_lock(&mute);
@@ -44,7 +44,7 @@ void* test(){
 		mut_unlock(&mute);
 	}
 	return (NULL);
-}
+} */
 /* POUR LES TESTS
 int main(int argc, char *argv[]){
 	int err;

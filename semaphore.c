@@ -1,9 +1,9 @@
 #include "semaphore.h"
 
-int N;
+// int N;
 
-struct sema mute;
-struct sema mute2;
+// struct sema mute;
+// struct sema mute2;
 
 int sema_init(struct sema *s, unsigned int value){
 	s->val=value;
@@ -47,7 +47,7 @@ void sema_post(struct sema *s){
 
 
 
-
+/*
 void* test1(){
 	for(int i=0; i<64/N; i++){
 		sema_wait(&mute);
@@ -76,7 +76,7 @@ void* test2(){
 		sema_post(&mute);
 	}
 	return (NULL);
-}
+} */
 /* POUR LES TESTS */
 /*
 int main(int argc, char *argv[]){
