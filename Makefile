@@ -5,7 +5,7 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 
-all: philo prod_cons lect_ecrv test_and_set test_and_test_and_set
+all: philo prod_cons lect_ecrv test_and_set test_and_test_and_set semaphore
 
 test: philo prod_cons lect_ecrv
 		./perf.sh
@@ -27,6 +27,9 @@ test_and_set: test_and_set.c
 		
 test_and_test_and_set: verrou.c
 		$(CC) verrou.c -pthread -o test_and_test_and_set $(CFLAGS)
+		
+semaphore: semaphore.c
+		$(CC) semaphore.c -pthread -o semaphore $(CFLAGS)
 
 clean:
-		rm -rf philo lect_ecrv prod_cons test_and_set test_and_test_and_set
+		rm -rf philo lect_ecrv prod_cons test_and_set test_and_test_and_set semaphore
