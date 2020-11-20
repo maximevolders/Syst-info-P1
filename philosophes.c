@@ -22,8 +22,8 @@ int PHILOSOPHES; // Nombre de philosophes
 int nbag; //Nombre de baguettes
 
 struct multArg{ // Structure pour pouvoir avoir accès aux baguettes globalement
-    // pthread_mutex_t* baguette; //POSIX
-    struct mut* baguette; //ATTENTE ACTIVE
+    pthread_mutex_t* baguette; //POSIX
+    // struct mut* baguette; //ATTENTE ACTIVE
 };
 
 struct multArg bag;
@@ -62,7 +62,6 @@ void* philosophe( void* arg )
         // Philosophe libère ses baguettes
         pthread_mutex_unlock((bag.baguette)+left); //POSIX
         pthread_mutex_unlock((bag.baguette)+right); //POSIX
-		printf("%d \t", *id);
         // mut_unlock((bag.baguette)+left); //ATTENTE ACTIVE
         // mut_unlock((bag.baguette)+right); //ATTENTE ACTIVE
         i++;

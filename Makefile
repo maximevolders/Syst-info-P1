@@ -6,12 +6,13 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 
-all: philo prod_cons lect_ecrv test_and_set test_and_test_and_set semaphore
+all: philo prod_cons lect_ecrv
+
 
 test: philo prod_cons lect_ecrv
 		./perf.sh
 
-philo: philosophes.c semaphore.c
+philo: philosophes.c test_and_test_and_set.c
 		$(CC) philosophes.c test_and_test_and_set.c -pthread -o philo $(CFLAGS)
 
 prod_cons: producteurs_consommateurs.c semaphore.c test_and_test_and_set.c
@@ -20,16 +21,16 @@ prod_cons: producteurs_consommateurs.c semaphore.c test_and_test_and_set.c
 lect_ecrv: lecteurs_ecrivains.c test_and_test_and_set.c semaphore.c
 		$(CC) lecteurs_ecrivains.c test_and_test_and_set.c semaphore.c -pthread -o lect_ecrv $(CFLAGS)
 
-		
+
 verrou: test_and_set test_and_test_and_set
 		./perf_tas.sh
-	
+
 test_and_set: test_and_set.c
 		$(CC) test_and_set.c -pthread -o test_and_set $(CFLAGS)
-		
+
 test_and_test_and_set: test_and_test_and_set.c
 		$(CC) test_and_test_and_set.c -pthread -o test_and_test_and_set $(CFLAGS)
-		
+
 semaphore: semaphore.c
 		$(CC) semaphore.c -pthread -o semaphore $(CFLAGS)
 
