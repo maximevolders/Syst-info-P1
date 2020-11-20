@@ -11,7 +11,6 @@ do
 		echo -n "$j," >> mesures_tatas.csv
         /usr/bin/time -ao mesures_tas.csv -f "%e" ./test_and_set $j 2> /dev/null
         /usr/bin/time -ao mesures_tatas.csv -f "%e" ./test_and_test_and_set $j 2> /dev/null
-		
 		make -s clean
     done
 done
