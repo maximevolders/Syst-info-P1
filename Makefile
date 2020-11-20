@@ -19,7 +19,7 @@ prod_cons: producteurs_consommateurs.c
 lect_ecrv: lecteurs_ecrivains.c
 		$(CC) lecteurs_ecrivains.c -pthread -o lect_ecrv $(CFLAGS)
 		
-verrou: testlock
+verrou: test_and_set test_and_test_and_set
 		./perf_tas.sh
 	
 test_and_set: test_and_set.c
