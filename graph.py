@@ -6,25 +6,34 @@ import pandas as pd
 
 
 def philosophes():
-    data = pd.read_csv("mesures1.csv")
+    data1 = pd.read_csv("mesures1posix.csv")
     
-    mean = data.groupby(["thread"]).mean()["time"]
-    std = data.groupby(["thread"]).std()["time"]
-    threads = data["thread"].unique()
+    mean1 = data1.groupby(["thread"]).mean()["time"]
+    std1 = data1.groupby(["thread"]).std()["time"]
+    threads1 = data1["thread"].unique()
+    
+    data2 = pd.read_csv("mesures1AttAct.csv")
+    
+    mean2 = data2.groupby(["thread"]).mean()["time"]
+    std2 = data2.groupby(["thread"]).std()["time"]
+    threads2 = data2["thread"].unique()
     
     fig1 = plt.figure()
     
-    plt.plot(threads, mean, color="blue", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="blue")
+    plt.plot(threads1, mean1, color="blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="blue")
     
-    plt.xlim(0,np.max(data["thread"])+1)
-    plt.ylim(0,np.max(data["time"])+1)
+    plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    
+    plt.xlim(0,np.max(data1["thread"])+1)
+    plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
     plt.title("Problème des philosophes")
     plt.grid(True)
-    plt.legend(['Moyenne','Écart type'], loc = 'upper right')
+    plt.legend(['POSIX','Attente active type'], loc = 'upper right')
     
     plt.savefig("Philosophes.png")
     plt.savefig("Philosophes.pdf")
@@ -33,25 +42,34 @@ def philosophes():
     plt.close()
     
 def prod_cons():
-    data = pd.read_csv("mesures2.csv")
+    data1 = pd.read_csv("mesures2posix.csv")
     
-    mean = data.groupby(["thread"]).mean()["time"]
-    std = data.groupby(["thread"]).std()["time"]
-    threads = data["thread"].unique()
+    mean1 = data1.groupby(["thread"]).mean()["time"]
+    std1 = data1.groupby(["thread"]).std()["time"]
+    threads1 = data1["thread"].unique()
+    
+    data2 = pd.read_csv("mesures2AttAct.csv")
+    
+    mean2 = data2.groupby(["thread"]).mean()["time"]
+    std2 = data2.groupby(["thread"]).std()["time"]
+    threads2 = data2["thread"].unique()
     
     fig1 = plt.figure()
     
-    plt.plot(threads, mean, color="blue", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="blue")
+    plt.plot(threads1, mean1, color="blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="blue")
     
-    plt.xlim(0,np.max(data["thread"])+1)
-    plt.ylim(0,np.max(data["time"])+1)
+    plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    
+    plt.xlim(0,np.max(data1["thread"])+1)
+    plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
     plt.title("Problème des producteurs et consommateurs")
     plt.grid(True)
-    plt.legend(['Moyenne','Écart type'], loc = 'upper right')
+    plt.legend(['POSIX','Attente active'], loc = 'upper right')
     
     plt.savefig("Prod_cons.png")
     plt.savefig("Prod_cons.pdf")
@@ -60,25 +78,34 @@ def prod_cons():
     plt.close()
     
 def read_write():
-    data = pd.read_csv("mesures3.csv")
+    data1 = pd.read_csv("mesures3posix.csv")
     
-    mean = data.groupby(["thread"]).mean()["time"]
-    std = data.groupby(["thread"]).std()["time"]
-    threads = data["thread"].unique()
+    mean1 = data1.groupby(["thread"]).mean()["time"]
+    std1 = data1.groupby(["thread"]).std()["time"]
+    threads1 = data1["thread"].unique()
+    
+    data2 = pd.read_csv("mesures3AttAct.csv")
+    
+    mean2 = data2.groupby(["thread"]).mean()["time"]
+    std2 = data2.groupby(["thread"]).std()["time"]
+    threads2 = data2["thread"].unique()
     
     fig1 = plt.figure()
     
-    plt.plot(threads, mean, color="blue", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="blue")
+    plt.plot(threads1, mean1, color="blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="blue")
     
-    plt.xlim(0,np.max(data["thread"])+1)
-    plt.ylim(0,np.max(data["time"])+1)
+    plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    
+    plt.xlim(0,np.max(data1["thread"])+1)
+    plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
     plt.title("Problème des lecteurs et écrivains")
     plt.grid(True)
-    plt.legend(['Moyenne','Écart type'], loc = 'upper right')
+    plt.legend(['POSIX','Attente active'], loc = 'upper right')
     
     plt.savefig("Lect_ecrv.png")
     plt.savefig("Lect_ecrv.pdf")
