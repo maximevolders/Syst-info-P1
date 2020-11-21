@@ -35,17 +35,15 @@ void sema_unlock(struct sema *s){
 
 void sema_wait(struct sema *s){
 	s->val = (s->val)-1;
-	if((s->val)<0)
+	if((s->val)<=0)
 		sema_lock(s);
 }
 
 void sema_post(struct sema *s){
 	s->val = (s->val)+1;
-	if((s->val)<=0)
+	if((s->val)>0)
 		sema_unlock(s);
 }
-
-
 
 /*
 void* test1(){

@@ -33,7 +33,7 @@ def philosophes():
     plt.ylabel('Temps [s]')
     plt.title("Problème des philosophes")
     plt.grid(True)
-    plt.legend(['POSIX','Attente active type'], loc = 'upper right')
+    plt.legend(['POSIX','Attente active'], loc = 'upper left')
     
     plt.savefig("Philosophes.png")
     plt.savefig("Philosophes.pdf")
@@ -69,7 +69,7 @@ def prod_cons():
     plt.ylabel('Temps [s]')
     plt.title("Problème des producteurs et consommateurs")
     plt.grid(True)
-    plt.legend(['POSIX','Attente active'], loc = 'upper right')
+    plt.legend(['POSIX','Attente active'], loc = 'upper left')
     
     plt.savefig("Prod_cons.png")
     plt.savefig("Prod_cons.pdf")
@@ -105,7 +105,7 @@ def read_write():
     plt.ylabel('Temps [s]')
     plt.title("Problème des lecteurs et écrivains")
     plt.grid(True)
-    plt.legend(['POSIX','Attente active'], loc = 'upper right')
+    plt.legend(['POSIX','Attente active'], loc = 'upper left')
     
     plt.savefig("Lect_ecrv.png")
     plt.savefig("Lect_ecrv.pdf")
@@ -114,5 +114,5 @@ def read_write():
     plt.close()
     
 philosophes()
-prod_cons()
-read_write()
+#prod_cons()
+#read_write()

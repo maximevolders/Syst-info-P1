@@ -4,37 +4,59 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+def tas():
+    data = pd.read_csv("mesures_tas.csv")
+        
+    mean = data.groupby(["thread"]).mean()["time"]
+    std = data.groupby(["thread"]).std()["time"]
+    threads = data["thread"].unique()
+        
+    fig1 = plt.plot()
+       
+    plt.plot(threads, mean, color="red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="red")
+        
+    plt.xlim(0,np.max(data["thread"])+1)
+    plt.ylim(0,np.max(data["time"])+1)
+        
+    plt.xlabel('# threads')
+    plt.ylabel('Temps [s]')
+    plt.title("Performance des verrous")
+    plt.grid(True)
+    plt.legend(['Moyenne','Écart type'], loc = 'upper left')
+        
+    plt.savefig("Test_and_set.png")
+    plt.savefig("Test_and_set.pdf")
+        
+    plt.show()
+    plt.close()
 
-data = pd.read_csv("mesures_tas.csv")
-data2 = pd.read_csv("mesures_tatas.csv")
+def tatas():
+    data = pd.read_csv("mesures_tatas.csv")
     
-mean = data.groupby(["thread"]).mean()["time"]
-std = data.groupby(["thread"]).std()["time"]
-threads = data["thread"].unique()
-
-mean2 = data2.groupby(["thread"]).mean()["time"]
-std2 = data2.groupby(["thread"]).std()["time"]
-threads2 = data2["thread"].unique()
+    mean = data.groupby(["thread"]).mean()["time"]
+    std = data.groupby(["thread"]).std()["time"]
+    threads = data["thread"].unique()
+        
+    fig1 = plt.plot()
     
-fig1 = plt.figure()
-   
-plt.plot(threads, mean, color="green", linewidth=1.0, linestyle="-")
-plt.errorbar(threads, mean, yerr=std, fmt='-o', color="green")
-
-plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
-plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    plt.plot(threads, mean, color="red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads, mean, yerr=std, fmt='-o', color="red")
+        
+    plt.xlim(0,np.max(data["thread"])+1)
+    plt.ylim(0,0.5)
+        
+    plt.xlabel('# threads')
+    plt.ylabel('Temps [s]')
+    plt.title("Performance des verrous")
+    plt.grid(True)
+    plt.legend(['Moyenne','Écart type'], loc = 'upper left')
+        
+    plt.savefig("Test_and_test_and_set.png")
+    plt.savefig("Test_and_test_and_set.pdf")
+        
+    plt.show()
+    plt.close()
     
-plt.xlim(0,np.max(data["thread"])+1)
-plt.ylim(0,np.max(data["time"])+1)
-    
-plt.xlabel('# threads')
-plt.ylabel('Temps [s]')
-plt.title("Performance des verrous")
-plt.grid(True)
-plt.legend(['Test-and-set','Test-and-test-and-set'], loc = 'upper right')
-    
-plt.savefig("Verrous.png")
-plt.savefig("Verrous.pdf")
-    
-plt.show()
-plt.close()
+tas()
+tatas()
