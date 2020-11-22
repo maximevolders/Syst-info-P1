@@ -5,7 +5,7 @@
 #include <string.h>
 
 struct sema{
-	int val;
+	volatile int val;
 	volatile int verrou;
 };
 
