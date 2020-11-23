@@ -21,7 +21,9 @@
 int PHILOSOPHES; // Nombre de philosophes
 int nbag; //Nombre de baguettes
 
-struct multArg{ // Structure pour pouvoir avoir accès aux baguettes globalement
+/* Structure pour pouvoir avoir accès aux baguettes globalement
+ */
+struct multArg{
     pthread_mutex_t* baguette; //POSIX
     // struct mut* baguette; //ATTENTE ACTIVE
 };
@@ -33,7 +35,9 @@ void error(int err, char *msg) {
     exit(EXIT_FAILURE);
 }
 
-// Fonction qui va faire penser et manger les philosophes 1.000.000 fois chacun.
+/* Fonction qui va faire penser et manger les philosophes 1.000.000 fois chacun.
+ * Argument: Pointeur vers le tableau contenant l'ID du philosophe.
+ */
 void* philosophe( void* arg )
 {
 

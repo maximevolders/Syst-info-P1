@@ -5,9 +5,9 @@
 #include <string.h>
 
 struct sema{
-	volatile int val;
-	volatile int verrou;
-	volatile int semlock;
+	volatile int val; // Valeur de la sémaphore
+	volatile int ver; // Verrou de la sémaphore, bloquant les threads lors de l'appel wait()
+	volatile int semlock; // Verrou dans la sémaphore, verrouillant les sections critiques de l'implémentation de notre sémaphore
 };
 
 int sema_init(struct sema *s, unsigned int value);
