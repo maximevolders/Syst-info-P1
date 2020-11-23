@@ -1,35 +1,68 @@
+/**************************************
+ * test_and_test_and_set.c
+ *
+ * Programme du verrou test and test and set
+ * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
+ *
+ * Gauthier Arnold et Volders Maxime
+ **************************************/
+
+//Structure définie dans le fichier test_and_test_and_set.h
 #include "test_and_test_and_set.h"
 
-// int N;
+//Variables globales pour faire nos tests
 
+// int N;
 // struct mut mute;
 
+/*
+ * Initialise la structure, met la variable ver à 0.
+ * Argument : Pointeur vers le verrou à initialiser
+ * Return : 0 en cas de bon fonctionnement
+ * */
 int mut_init(struct mut *mu){
-	mu->verrou=0;
+	mu->ver=0;
 	return 0;
 }
 
+/*
+ * Echange les valeurs de ver et test
+ * Argument : Pointeur vers le verrou
+ * Return : test, qui vaut 0 ou 1.
+ * */
 int mut_testAndSet(struct mut *mu){
 	int test=1;
 		asm("movl $1, %%eax;"
 		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+m" (mu->verrou), "=r" (test) /* paramètres de sortie */
+		:"+m" (mu->ver), "=r" (test) /* paramètres de sortie */
 		: /* paramètres d'entrée */
 		:"%eax" /* registres modifiés */
 		);
 	return test;
 }
 
+/*
+ * Fonction de verrouillage
+ * Argument : Pointeur vers la structure mutex à verrouiller
+ * */
 void mut_lock(struct mut *mu){
 	do{
-		while(mu->verrou == 1);
+		while(mu->ver == 1);
 	} while(mut_testAndSet(mu) == 1);
 }
 
+/*
+ * Fonction de déverrouillage
+ * Argument : Pointeur vers la structure mutex à déverrouiller
+ * */
 void mut_unlock(struct mut *mu){
-	mu->verrou = 0;
+	mu->ver = 0;
 }
+/*
+ * Fonction test pour tester nos performances
+ * Retirer les commentaires pour pouvoir lancer le code
+ * */
 /*
 void* test(){
 	for(int i=0; i<6400/N; i++){
@@ -44,8 +77,10 @@ void* test(){
 		mut_unlock(&mute);
 	}
 	return (NULL);
-} */
-/* POUR LES TESTS
+}
+
+ */
+/* Pour les tests, retirer le commentaire pour lancer le code
 int main(int argc, char *argv[]){
 	int err;
 	

@@ -41,8 +41,9 @@ void error(int err, char *msg) {
     exit(EXIT_FAILURE);
 }
 
-// On produit un nouvel élément grâce à la fonction rand. Si rand retourne 0, on reproduit un élément.
-// Return: le nouvel élément à insérer dans la liste.
+/* On produit un nouvel élément grâce à la fonction rand. Si rand retourne 0, on reproduit un élément.
+ * Return: le nouvel élément à insérer dans la liste.
+ * */
 int produce_item(){
 	int rando = rand();
 	if(rando == 0)
@@ -50,8 +51,9 @@ int produce_item(){
 	return rando;
 }
 
-// On insère un élément dans le buffer. Les espaces vides du buffer sont égaux à 0.
-// Argument: l'élément à insérer
+/* On insère un élément dans le buffer. Les espaces vides du buffer sont égaux à 0.
+ * Argument: l'élément à insérer
+ */
 void insert_item(int item){
 	for(int i=0; i<N; i++){
 		if(buffer[i] == 0){
@@ -63,8 +65,9 @@ void insert_item(int item){
 }
 
 
-// On supprime un élément du buffer. L'espace libéré est mis à 0.
-// Return: l'élément supprimé du buffer
+/*On supprime un élément du buffer. L'espace libéré est mis à 0.
+ * Return: l'élément supprimé du buffer
+ * */
 void remove_item(){
 	for(int i=0; i<N; i++){
 		if(buffer[i] != 0){
@@ -75,7 +78,8 @@ void remove_item(){
 	error(1, "Pas d'élément enlevé de la liste!"); // Ne devrait jamais être imprimé
 }
 
-// Producteur
+/*Producteur
+ */
 void* producer(){
 	int item;
 	while(elem_prod<MAX){ // Tant qu'on a pas atteint le nombre max d'éléments à produire
@@ -119,7 +123,8 @@ void* producer(){
 	return (NULL);
 }
 
-// Consommateur
+/*Consommateur
+ */
 void* consumer(){
 	while(elem_cons<MAX){ // Tant qu'on a pas consommé le nombre max d'éléments
 		// Attente d'une place remplie
