@@ -3,8 +3,6 @@
 #make verrou lance les tests pour test_and_set et test_and_test_and_set (et compile les fichiers si les exécutables n'existent pas)
 #make clean supprime les exécutables
 
-#si dans les fichiers test_and_set et test_and_test_and_set les tests et le main sont mit en commentaire, il faut les supprimer du 'all' sinon il y aura une erreur
-
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 

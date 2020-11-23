@@ -1,6 +1,6 @@
 Bonjour,
 
-Si vous voulez run les codes, il faut le faire dans le fichier "Tout", là où tout est en désordre mais où chaque fichier à accès aux autres.
+Si vous voulez run les codes, il faut le faire dans le dosier "Tout", là où tout est en désordre mais où chaque fichier à accès aux autres.
 
 En revanche, si vous voulez juste allez voir certaines parties du projet, certains codes, etc.. Tous nos fichiers sont triés dans des dossiers
 
