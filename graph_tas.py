@@ -34,7 +34,7 @@ def tas():
     #Légende des axes, titre du graphique, grille, légende du graphique
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
-    plt.title("Performance des verrous")
+    plt.title("Performance test-and-set")
     plt.grid(True)
     plt.legend(['Moyenne','Écart type'], loc = 'upper left')
     
@@ -62,7 +62,7 @@ def tatas():
         
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
-    plt.title("Performance des verrous")
+    plt.title("Performance test-and-test-and-set")
     plt.grid(True)
     plt.legend(['Moyenne','Écart type'], loc = 'upper left')
         
