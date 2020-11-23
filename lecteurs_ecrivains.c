@@ -15,8 +15,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-#include "test_and_test_and_set.h"
 #include "semaphore.h"
+#include "test_and_test_and_set.h"
 
 #define MAX_LECT 2560
 #define MAX_WRITE 640
@@ -127,7 +127,6 @@ void* reader(){
 			
 			// section critique
 			nombre_lect++;
-			printf("%d\t", nombre_lect);
 			// pthread_mutex_unlock(&mutex_lect); // POSIX
 			mut_unlock(&mutex_lect); // ATTENTE ACTIVE
 		}
@@ -197,6 +196,8 @@ int main(int argc, char *argv[]){
         if(err!=0)
             error(err,"pthread_join");
 	}
+
+	printf("%d, %d\n", nombre_lect, nombre_write);
 
 	return EXIT_SUCCESS;
 }

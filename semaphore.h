@@ -7,11 +7,12 @@
 struct sema{
 	volatile int val;
 	volatile int verrou;
+	volatile int semlock;
 };
 
 int sema_init(struct sema *s, unsigned int value);
-int sema_testAndSet(struct sema *s);
-void sema_lock(struct sema *s);
-void sema_unlock(struct sema *s);
+int sema_testAndSet(volatile int *verrou);
+void sema_lock(volatile int *verrou);
+void sema_unlock(volatile int *verrou);
 void sema_wait(struct sema *s);
 void sema_post(struct sema *s);

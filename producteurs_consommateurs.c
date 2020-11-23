@@ -15,8 +15,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-#include "test_and_test_and_set.h"
 #include "semaphore.h"
+#include "test_and_test_and_set.h"
 
 #define N 8 // La taille du buffer
 #define MAX 1024 // Le nombre max d'éléments à produire/consommer
@@ -211,6 +211,8 @@ int main(int argc, char *argv[]){
 	pthread_mutex_destroy(&mutex); // Libération de la mémoire
 	sem_destroy(&empty);
 	sem_destroy(&full); */
+	
+	printf("%d, %d\n", elem_prod, elem_cons);
 	
 	return EXIT_SUCCESS;
 }
