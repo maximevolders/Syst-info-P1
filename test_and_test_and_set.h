@@ -5,7 +5,7 @@
 #include <string.h>
 
 struct mut{
-	volatile int verrou;
+	volatile int ver;
 };
 
 int mut_init(struct mut *mu);
