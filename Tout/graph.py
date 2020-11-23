@@ -43,7 +43,7 @@ def philosophes():
     
     #Modification des limites des axes du graphiques ([0;max+1])
     plt.xlim(0,np.max(data1["thread"])+1)
-    plt.ylim(0,np.max(data2["time"])+1)
+    plt.ylim(0,2)
     
     #Légende des axes, titre du graphique, grille, légende du graphique
     plt.xlabel('# threads')
@@ -132,5 +132,5 @@ def read_write():
     plt.close()
     
 philosophes()
-prod_cons()
-read_write()
+#prod_cons()
+#read_write()
