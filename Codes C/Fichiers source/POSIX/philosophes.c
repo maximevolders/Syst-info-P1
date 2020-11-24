@@ -24,8 +24,7 @@ int nbag; //Nombre de baguettes
 /* Structure pour pouvoir avoir accès aux baguettes globalement
  */
 struct multArg{
-    pthread_mutex_t* baguette; //POSIX
-    // struct mut* baguette; //ATTENTE ACTIVE
+    pthread_mutex_t* baguette;
 };
 
 struct multArg bag;
@@ -48,26 +47,18 @@ void* philosophe( void* arg )
     while(i<MAX) { // Les philosophes doivent faire 1.000.000 cycles manger/penser
         // Philosophe pense
         if(left<right) { // Cette condition permet d'éviter d'avoir un deadlock
-            pthread_mutex_lock((bag.baguette)+left);//POSIX
-            pthread_mutex_lock((bag.baguette)+right);//POSIX
-			
-            // mut_lock((bag.baguette)+left); //ATTENTE ACTIVE
-            // mut_lock((bag.baguette)+right); //ATTENTE ACTIVE
+            pthread_mutex_lock((bag.baguette)+left);
+            pthread_mutex_lock((bag.baguette)+right);
 
         }
         else {
-            pthread_mutex_lock((bag.baguette)+right); //POSIX
-            pthread_mutex_lock((bag.baguette)+left); //POSIX
-
-            // mut_lock((bag.baguette)+right); //ATTENTE ACTIVE
-            // mut_lock((bag.baguette)+left); //ATTENTE ACTIVE
+            pthread_mutex_lock((bag.baguette)+right);
+            pthread_mutex_lock((bag.baguette)+left);
         }
         // Philosophe mange
         // Philosophe libère ses baguettes
-        pthread_mutex_unlock((bag.baguette)+left); //POSIX
-        pthread_mutex_unlock((bag.baguette)+right); //POSIX
-        // mut_unlock((bag.baguette)+left); //ATTENTE ACTIVE
-        // mut_unlock((bag.baguette)+right); //ATTENTE ACTIVE
+        pthread_mutex_unlock((bag.baguette)+left);
+        pthread_mutex_unlock((bag.baguette)+right);
         i++;
     }
     return (NULL);
@@ -83,8 +74,7 @@ int main ( int argc, char *argv[])
 	  nbag = 2;
 	}
     // Mutex pour toutes les baguettes
-	pthread_mutex_t z[nbag]; //POSIX
-	// struct mut z[nbag]; //ATTENTE ACTIVE
+	pthread_mutex_t z[nbag];
 
     bag.baguette = z; // Stocke dans la struct pour que ce soit global
 
@@ -98,8 +88,7 @@ int main ( int argc, char *argv[])
         id[i]=i;
 
     for (i = 0; i < nbag; i++) {// Initialise et Unlock les mutex
-        err=pthread_mutex_init(bag.baguette+i, NULL); //POSIX
-        // err=mut_init(bag.baguette+i); //ATTENTE ACTIVE
+        err=pthread_mutex_init(bag.baguette+i, NULL);
         if(err!=0)
             error(err,"pthread_mutex_init");
     }
@@ -116,7 +105,6 @@ int main ( int argc, char *argv[])
             error(err,"pthread_join");
     }
 
-	/* POSIX */
     for (i = 0; i < PHILOSOPHES; i++) { // Détruit les mutex à la fin des 1.000.000 cycles de chaque philosophe
         pthread_mutex_destroy(bag.baguette+i);
         if(err!=0)
