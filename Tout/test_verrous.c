@@ -1,20 +1,27 @@
 /**************************************
- * test_and_set.c
+ * test_verrou.c
  *
- * Programme du verrou test and set
+ * Programme de tests des différents verrous par attente active
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime
  **************************************/
 
-#include <errno.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-volatile int verrou=0;
+/* test semaphore */
+// #include "semaphore.h"
+
+/*test test_and_test_and_set */
+#include "test_and_test_and_set.h"
+
 int N;
+mut mute;
+//sema semp;
 
 /* Message en cas d'erreur */
 void error(int err, char *msg) {
@@ -22,43 +29,28 @@ void error(int err, char *msg) {
     exit(EXIT_FAILURE);
 }
 
-/* Verrou, empêche les autres thread d'aller plus loin tant que pas unlock */
-void lock(){
-	int test=1;
-	while(test) {
-        __asm__("movl $1, %%eax;"
-            "xchgl %%eax, %0;"
-            "movl %%eax, %1;"
-        :"+m" (verrou), "=r" (test) /* paramètres de sortie */
-        : /* paramètres d'entrée */
-        :"%eax" /* registres modifiés */
-        );
-    }
-}
-
-/* Déverouille, autorise un autre thread à accéder à sa section critique */
-void unlock(){
-	verrou = 0;
-}
-
-/* Méthode de test pour tester le verrou */
 void* test(){
-	for(int i=0; i<6400/N; i++){
-		lock();
+	for(int i=0; i<64/N; i++){
+		// sema_wait(&semp); // test semaphore
+		mut_lock(&mute); // test mutex
 		while(rand() > RAND_MAX/1000);
-		unlock();
+		mut_unlock(&mute);
+		// sema_post(&semp);
 	}
 	return (NULL);
-}
+} 
 
 int main(int argc, char *argv[]){
-	int err;
 	
 	if(argc != 2) return (EXIT_FAILURE);
 	N = atoi(argv[1]); // Nombre de threads
-	
+
 	pthread_t thread[N];
 	
+	// sema_init(&semp, 0);
+	mut_init(&mute);
+	
+	int err;
 	for (int i=0; i<N; i++) { // On crée les threads
         err=pthread_create(&(thread[i]),NULL,test,NULL);
         if(err!=0)

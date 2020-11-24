@@ -41,8 +41,8 @@ def philosophes():
     plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
     plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
     
-    #Modification des limites des axes du graphiques ([0;max+1])
-    plt.xlim(0,np.max(data1["thread"])+1)
+    #Modification des limites des axes du graphiques
+    plt.xlim(0,8.5)
     plt.ylim(0,2)
     
     #Légende des axes, titre du graphique, grille, légende du graphique
@@ -80,7 +80,7 @@ def prod_cons():
     plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
     plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
     
-    plt.xlim(0,np.max(data1["thread"])+1)
+    plt.xlim(0,8.5)
     plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')
@@ -116,7 +116,7 @@ def read_write():
     plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
     plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
     
-    plt.xlim(0,np.max(data1["thread"])+1)
+    plt.xlim(0,8.5)
     plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')

@@ -7,8 +7,8 @@
  * Gauthier Arnold et Volders Maxime
  **************************************/
 
-#include <stdio.h>
 #include <errno.h>
+#include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +16,7 @@
 volatile int verrou=0;
 int N;
 
-//Message en cas d'erreur
+/* Message en cas d'erreur */
 void error(int err, char *msg) {
     fprintf(stderr,"%s a retourné %d message d'erreur : %s\n",msg,err,strerror(errno));
     exit(EXIT_FAILURE);
@@ -36,12 +36,12 @@ void lock(){
     }
 }
 
-//Déverouille, autorise un autre thread à accéder à sa section critique
+/* Déverouille, autorise un autre thread à accéder à sa section critique */
 void unlock(){
 	verrou = 0;
 }
 
-//Méthode de test pour tester le verrou
+/* Méthode de test pour tester le verrou */
 void* test(){
 	for(int i=0; i<6400/N; i++){
 		lock();

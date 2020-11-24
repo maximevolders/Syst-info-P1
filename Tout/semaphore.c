@@ -14,15 +14,7 @@
 #include <string.h>
 
 // Structure définie dans le fichier semaphore.h
-
-typedef struct sema{
-	volatile int val; // Valeur de la sémaphore
-	volatile int ver; // Verrou de la sémaphore, bloquant les threads lors de l'appel wait()
-	volatile int semlock; // Verrou dans la sémaphore, verrouillant les sections critiques de l'implémentation de notre sémaphore
-}sema;
-
-struct sema semp;
-int N;
+#include "semaphore.h"
 
 /* Fonction d'initialisation de la sémaphore. Met les 2 verrous à 0 (libre) et définie la valeur de la sémaphore.
  * Arguments: pointeur vers la sémaphore à initialiser et la valeur de la sémaphore
@@ -93,38 +85,4 @@ void sema_post(sema *s){
 		sema_unlock(&(s->ver)); // On unlock la sémaphore, permettant a un thread dans la queue de continuer son exécution
 	}
 	sema_unlock(&(s->semlock)); // fin de section critique
-}
-
-
-void* test(){
-	for(int i=0; i<64/N; i++){
-		sema_wait(&semp);
-		while(rand() > RAND_MAX/1000);
-		for(int j=0; j<10; j++){
-			printf("%d", j);
-		}
-		printf("\n");
-		sema_post(&semp);
-	}
-	return (NULL);
-} 
-
-int main(int argc, char *argv[]){
-	
-	if(argc != 2) return (EXIT_FAILURE);
-	N = atoi(argv[1]); // Nombre de threads
-
-	pthread_t thread[N];
-	
-	sema_init(&semp, 0);
-	
-    for (int i=0; i<N; i++) { // On crée les threads
-        pthread_create(&(thread[i]),NULL,test,NULL);
-        
-    }
-
-    for(int i=0; i<N; i++) { // On attend que les threads se terminent
-      pthread_join(thread[i],NULL);
-    }
-    return (EXIT_SUCCESS);
 }

@@ -13,12 +13,13 @@ En revanche, si vous voulez juste allez voir certaines parties du projet, certai
 			Les 3 problèmes implémentés avec les mutex/sémaphores de la libraire POSIX
 		- Verrous:
 			Test-and-set, test-and-test-and-set et la sémaphore utilisant l'attente active
+			Le bonus backoff-test-and-test-and-set ainsi que le code test_verrous qui permet de tester les différents verrous
 	- Fichiers header:
-		Les 2 header du test-and-test-and-set et de la sémaphore
+		Les 2 headers du test-and-test-and-set et de la sémaphore
 - Codes Python:
 	Les 2 scripts python pour faire les graphes
 		- 1 pour les 3 problèmes
-		- 1 pour les 2 verrous
+		- 1 pour les 3 verrous
 - Graphiques
 	Les différents graphiques au format png et pdf
 		- 1 graphique par format et par problème (donc 6 fichiers)

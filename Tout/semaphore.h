@@ -4,14 +4,14 @@ typedef struct sema{
 	volatile int semlock; // Verrou dans la sémaphore, verrouillant les sections critiques de l'implémentation de notre sémaphore
 }sema;
 
-void sema_init(sema *s, unsigned int value){}
+void sema_init(sema *s, unsigned int value);
 
-int sema_testAndSet(volatile int *verrou){}
+int sema_testAndSet(volatile int *verrou);
 
-void sema_lock(volatile int *verrou){}
+void sema_lock(volatile int *verrou);
 
-void sema_unlock(volatile int *verrou){}
+void sema_unlock(volatile int *verrou);
 
-void sema_wait(sema *s){}
+void sema_wait(sema *s);
 
-void sema_post(sema *s){}
+void sema_post(sema *s);

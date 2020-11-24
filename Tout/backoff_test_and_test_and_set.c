@@ -13,8 +13,13 @@ typedef struct mut{
 }mut;
 
 int N;
-
 mut mute;
+
+/* Message en cas d'erreur */
+void error(int err, char *msg) {
+    fprintf(stderr,"%s a retourné %d message d'erreur : %s\n",msg,err,strerror(errno));
+    exit(EXIT_FAILURE);
+}
 
 void mut_init(mut *mu){
 	mu->ver=0;
@@ -68,14 +73,17 @@ int main(int argc, char *argv[]){
 	
 	mut_init(&mute);
 	
-    for (int i=0; i<N; i++) { // On crée les threads
-        pthread_create(&(thread[i]),NULL,test,NULL);
-        
-    }
-
-    for(int i=0; i<N; i++) { // On attend que les threads se terminent
-      pthread_join(thread[i],NULL);
+	int err;
+	for (int i=0; i<N; i++) { // On crée les threads
+        err=pthread_create(&(thread[i]),NULL,test,NULL);
+        if(err!=0)
+            error(err,"pthread_create");
     }
 	
-    return (EXIT_SUCCESS);
-} 
+	for(int i=0; i<N; i++) { // On attend que les threads se terminent
+		err=pthread_join(thread[i],NULL);
+        if(err!=0)
+            error(err,"pthread_join");
+	}
+	return (EXIT_SUCCESS);
+}
