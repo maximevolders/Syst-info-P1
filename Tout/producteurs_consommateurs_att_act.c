@@ -186,9 +186,6 @@ int main(int argc, char *argv[]){
         if(err!=0)
             error(err,"pthread_join");
 	}
-
-	
-	printf("%d, %d\n", elem_prod, elem_cons);
 	
 	return EXIT_SUCCESS;
 }

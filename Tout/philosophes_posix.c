@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-#include "test_and_test_and_set.h"
 
 #define MAX 1000000
 

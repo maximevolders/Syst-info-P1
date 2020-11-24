@@ -3,19 +3,24 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+#define MIN_SLEEP 2 // attente minimale en micro-secondes
+#define MAX_SLEEP 13000 // attente maximale en micro-secondes
 
 typedef struct mut{
 	volatile int ver;
 }mut;
 
 int N;
+
 mut mute;
 
-void mut_init(mut* mu){
+void mut_init(mut *mu){
 	mu->ver=0;
 }
 
-int mut_testAndSet(mut* mu){
+int mut_testAndSet(mut *mu){
 	int test=1;
 		__asm__("movl $1, %%eax;"
 		"xchgl %%eax, %0;"
@@ -27,16 +32,24 @@ int mut_testAndSet(mut* mu){
 	return test;
 }
 
-void mut_lock(mut* mu){
+void mut_lock(mut *mu){
 	do{
-		while(mu->ver == 1);
+		unsigned int time_sleep = MIN_SLEEP; // temps de sleep en micro-secondes
+		struct timespec req;
+		while(mu->ver == 1){
+			req.tv_nsec = (time_sleep-rand()%(time_sleep/2))*1000; // sleep en nano-secondes avec un part de random
+			nanosleep(&req,NULL); // sleep en nano-secondes
+			if(2*time_sleep <= MAX_SLEEP) 
+				time_sleep *=2;
+			else
+				time_sleep = MAX_SLEEP;
+		};
 	} while(mut_testAndSet(mu) == 1);
 }
 
 void mut_unlock(mut *mu){
 	mu->ver = 0;
 }
-
 
 void* test(){
 	for(int i=0; i<6400/N; i++){
@@ -47,8 +60,7 @@ void* test(){
 	return (NULL);
 } 
 
-int main(int argc, char *argv[]){
-	
+int main(int argc, char *argv[]){	
 	if(argc != 2) return (EXIT_FAILURE);
 	N = atoi(argv[1]); // Nombre de threads
 
@@ -64,5 +76,6 @@ int main(int argc, char *argv[]){
     for(int i=0; i<N; i++) { // On attend que les threads se terminent
       pthread_join(thread[i],NULL);
     }
+	
     return (EXIT_SUCCESS);
-}
+} 

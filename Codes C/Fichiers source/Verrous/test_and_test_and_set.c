@@ -1,35 +1,42 @@
-#include "test_and_test_and_set.h"
+#include <stdio.h>
+#include <errno.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct mut{
+	volatile int ver;
+}mut;
 
 int N;
+mut mute;
 
-struct mut mute;
-
-int mut_init(struct mut *mu){
-	mu->verrou=0;
-	return 0;
+void mut_init(mut* mu){
+	mu->ver=0;
 }
 
-int mut_testAndSet(struct mut *mu){
+int mut_testAndSet(mut* mu){
 	int test=1;
-		asm("movl $1, %%eax;"
+		__asm__("movl $1, %%eax;"
 		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+m" (mu->verrou), "=r" (test) /* paramètres de sortie */
+		:"+m" (mu->ver), "=r" (test) /* paramètres de sortie */
 		: /* paramètres d'entrée */
 		:"%eax" /* registres modifiés */
 		);
 	return test;
 }
 
-void mut_lock(struct mut *mu){
+void mut_lock(mut* mu){
 	do{
-		while(mu->verrou == 1);
+		while(mu->ver == 1);
 	} while(mut_testAndSet(mu) == 1);
 }
 
-void mut_unlock(struct mut *mu){
-	mu->verrou = 0;
+void mut_unlock(mut *mu){
+	mu->ver = 0;
 }
+
 
 void* test(){
 	for(int i=0; i<6400/N; i++){
@@ -58,4 +65,4 @@ int main(int argc, char *argv[]){
       pthread_join(thread[i],NULL);
     }
     return (EXIT_SUCCESS);
-} 
+}

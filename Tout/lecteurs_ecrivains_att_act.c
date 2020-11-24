@@ -161,7 +161,5 @@ int main(int argc, char *argv[]){
             error(err,"pthread_join");
 	}
 
-	printf("%d, %d\n", nombre_lect, nombre_write);
-
 	return EXIT_SUCCESS;
 }

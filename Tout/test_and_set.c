@@ -26,7 +26,7 @@ void error(int err, char *msg) {
 void lock(){
 	int test=1;
 	while(test) {
-        asm("movl $1, %%eax;"
+        __asm__("movl $1, %%eax;"
             "xchgl %%eax, %0;"
             "movl %%eax, %1;"
         :"+m" (verrou), "=r" (test) /* paramètres de sortie */

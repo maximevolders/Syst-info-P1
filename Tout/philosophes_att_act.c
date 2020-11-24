@@ -24,7 +24,7 @@ int nbag; //Nombre de baguettes
 /* Structure pour pouvoir avoir accès aux baguettes globalement
  */
 struct multArg{
-    struct mut* baguette;
+    mut* baguette;
 };
 
 struct multArg bag;
@@ -74,7 +74,7 @@ int main ( int argc, char *argv[])
 	  nbag = 2;
 	}
     // Mutex pour toutes les baguettes
-	struct mut z[nbag];
+	mut z[nbag];
 
     bag.baguette = z; // Stocke dans la struct pour que ce soit global
 
@@ -88,9 +88,7 @@ int main ( int argc, char *argv[])
         id[i]=i;
 
     for (i = 0; i < nbag; i++) {// Initialise et Unlock les mutex
-        err=mut_init(bag.baguette+i);
-        if(err!=0)
-            error(err,"pthread_mutex_init");
+        mut_init(bag.baguette+i);
     }
 
     for (i = 0; i < PHILOSOPHES; i++) { // On amorce les thread pour les philosophes

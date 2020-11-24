@@ -47,28 +47,36 @@ def tas():
 
 def tatas():
     data = pd.read_csv("mesures_tatas.csv")
-    
+    data2 = pd.read_csv("mesures_btatas.csv")
+        
     mean = data.groupby(["thread"]).mean()["time"]
     std = data.groupby(["thread"]).std()["time"]
     threads = data["thread"].unique()
-        
-    fig1 = plt.plot()
     
+    mean2 = data2.groupby(["thread"]).mean()["time"]
+    std2 = data2.groupby(["thread"]).std()["time"]
+    threads2 = data2["thread"].unique()
+            
+    fig1 = plt.plot()
+      
     plt.plot(threads, mean, color="red", linewidth=1.0, linestyle="-")
     plt.errorbar(threads, mean, yerr=std, fmt='-o', color="red")
-        
-    plt.xlim(0,np.max(data["thread"])+1)
+    
+    plt.plot(threads2, mean2, color="green", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="green")
+            
+    plt.xlim(0,np.max(data2["thread"])+1)
     plt.ylim(0,0.5)
-        
+           
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
     plt.title("Performance test-and-test-and-set")
     plt.grid(True)
-    plt.legend(['Moyenne','Écart type'], loc = 'upper left')
-        
+    plt.legend(['Test-and-test-and-set','Backoff-test-and-test-and-set'], loc = 'upper left')
+            
     plt.savefig("Test_and_test_and_set.png")
     plt.savefig("Test_and_test_and_set.pdf")
-        
+            
     plt.show()
     plt.close()
     

@@ -1,14 +1,11 @@
-#include <stdio.h>
-#include <errno.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct mut{
+typedef struct mut{
 	volatile int ver;
-};
+}mut;
 
-int mut_init(struct mut *mu);
-int mut_testAndSet(struct mut *mu);
-void mut_lock(struct mut *mu);
-void mut_unlock(struct mut *mu);
+void mut_init(mut* mu){}
+
+int mut_testAndSet(mut* mu){}
+
+void mut_lock(mut* mu){}
+
+void mut_unlock(mut* mu){}
