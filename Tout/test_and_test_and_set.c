@@ -5,7 +5,7 @@ int N;
 struct mut mute;
 
 int mut_init(struct mut *mu){
-	mu->verrou=0;
+	mu->ver=0;
 	return 0;
 }
 
@@ -14,7 +14,7 @@ int mut_testAndSet(struct mut *mu){
 		asm("movl $1, %%eax;"
 		"xchgl %%eax, %0;"
 		"movl %%eax, %1;"
-		:"+m" (mu->verrou), "=r" (test) /* paramètres de sortie */
+		:"+m" (mu->ver), "=r" (test) /* paramètres de sortie */
 		: /* paramètres d'entrée */
 		:"%eax" /* registres modifiés */
 		);
@@ -23,14 +23,14 @@ int mut_testAndSet(struct mut *mu){
 
 void mut_lock(struct mut *mu){
 	do{
-		while(mu->verrou == 1);
+		while(mu->ver == 1);
 	} while(mut_testAndSet(mu) == 1);
 }
 
 void mut_unlock(struct mut *mu){
-	mu->verrou = 0;
+	mu->ver = 0;
 }
-
+/*
 void* test(){
 	for(int i=0; i<6400/N; i++){
 		mut_lock(&mute);
@@ -58,4 +58,4 @@ int main(int argc, char *argv[]){
       pthread_join(thread[i],NULL);
     }
     return (EXIT_SUCCESS);
-} 
+} */

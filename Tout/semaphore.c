@@ -16,7 +16,7 @@
  */
 int sema_init(struct sema *s, unsigned int value){
 	s->val=value;
-	s->verrou = 0;
+	s->ver = 0;
 	s->semlock = 0;
 	return 0;
 }
