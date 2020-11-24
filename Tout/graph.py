@@ -132,5 +132,5 @@ def read_write():
     plt.close()
     
 philosophes()
-#prod_cons()
-#read_write()
+prod_cons()
+read_write()

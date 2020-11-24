@@ -6,7 +6,13 @@ En revanche, si vous voulez juste allez voir certaines parties du projet, certai
 
 - Codes C:
 	- Fichiers source:
-		Les différents codes.c (les 3 problèmes, les 2 verrous par attente active et la sémaphore)
+		Les différents codes.c
+		- Attente active:
+			Les 3 problèmes implémentés avec nos mutex/sémaphores par attente active
+		- POSIX:
+			Les 3 problèmes implémentés avec les mutex/sémaphores de la libraire POSIX
+		- Verrous:
+			Test-and-set, test-and-test-and-set et la sémaphore utilisant l'attente active
 	- Fichiers header:
 		Les 2 header du test-and-test-and-set et de la sémaphore
 - Codes Python:

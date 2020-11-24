@@ -6,20 +6,29 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 
-all: philo prod_cons lect_ecrv test_and_set test_and_test_and_set semaphore
+all: philo_att_act philo_posix prod_cons_att_act prod_cons_posix lect_ecrv_att_act lect_ecrv_posix test_and_set test_and_test_and_set semaphore
 
 
-test: philo prod_cons lect_ecrv
+test: philo_att_act philo_posix prod_cons_att_act prod_cons_posix lect_ecrv_att_act lect_ecrv_posix
 		./perf.sh
 
-philo: philosophes.c test_and_test_and_set.c
-		$(CC) philosophes.c test_and_test_and_set.c -pthread -o philo $(CFLAGS)
+philo_att_act: philosophes_att_act.c test_and_test_and_set.c
+		$(CC) philosophes_att_act.c test_and_test_and_set.c -pthread -o philo_att_act $(CFLAGS)
+		
+philo_posix: philosophes_posix.c test_and_test_and_set.c
+		$(CC) philosophes_posix.c test_and_test_and_set.c -pthread -o philo_posix $(CFLAGS)
 
-prod_cons: producteurs_consommateurs.c semaphore.c test_and_test_and_set.c
-		$(CC) producteurs_consommateurs.c test_and_test_and_set.c semaphore.c -pthread -o prod_cons $(CFLAGS)
+prod_cons_att_act: producteurs_consommateurs_att_act.c semaphore.c test_and_test_and_set.c
+		$(CC) producteurs_consommateurs_att_act.c test_and_test_and_set.c semaphore.c -pthread -o prod_cons_att_act $(CFLAGS)
 
-lect_ecrv: lecteurs_ecrivains.c test_and_test_and_set.c semaphore.c
-		$(CC) lecteurs_ecrivains.c test_and_test_and_set.c semaphore.c -pthread -o lect_ecrv $(CFLAGS)
+prod_cons_posix: producteurs_consommateurs_posix.c semaphore.c test_and_test_and_set.c
+		$(CC) producteurs_consommateurs_posix.c test_and_test_and_set.c semaphore.c -pthread -o prod_cons_posix $(CFLAGS)
+
+lect_ecrv_att_act: lecteurs_ecrivains_att_act.c test_and_test_and_set.c semaphore.c
+		$(CC) lecteurs_ecrivains_att_act.c test_and_test_and_set.c semaphore.c -pthread -o lect_ecrv_att_act $(CFLAGS)
+		
+lect_ecrv_posix: lecteurs_ecrivains_posix.c test_and_test_and_set.c semaphore.c
+		$(CC) lecteurs_ecrivains_posix.c test_and_test_and_set.c semaphore.c -pthread -o lect_ecrv_posix $(CFLAGS)
 
 
 verrou: test_and_set test_and_test_and_set

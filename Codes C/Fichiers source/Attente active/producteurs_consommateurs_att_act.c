@@ -23,12 +23,6 @@
 
 int buffer[N]; // On initialise le buffer (tous ses éléments valent 0)
 
-/* POSIX */ /*
-pthread_mutex_t mutex;
-sem_t empty;
-sem_t full; */
-
-/* ATTENTE ACTIVE */
 struct mut mutex;
 struct sema empty;
 struct sema full;
@@ -86,38 +80,31 @@ void* producer(){
 		item = produce_item();
 		
 		// Attente d'une place libre
-		// sem_wait(&empty); // POSIX
-		sema_wait(&empty); // ATTENTE ACTIVE
+		sema_wait(&empty);
 		
 		// Section critique
-		// pthread_mutex_lock(&mutex); // POSIX
-		mut_lock(&mutex); // ATTENTE ACTIVE
+		mut_lock(&mutex);
 		
 		if(elem_prod<MAX){ // Si on a produit moins que le nombre max d'éléments
 			insert_item(item);
 			elem_prod++;
 			
 			// Fin section critique
-			// pthread_mutex_unlock(&mutex); // POSIX
-			mut_unlock(&mutex); // ATTENTE ACTIVE
+			mut_unlock(&mutex);
 		
 			// Il y a une place remplie en plus
-			// sem_post(&full); // POSIX
-			sema_post(&full); // ATTENTE ACTIVE
+			sema_post(&full);
 			
 			if(elem_prod >= MAX)
 				// Afin de ne bloquer aucun producteur
-				// sem_post(&empty); // POSIX
-				sema_post(&empty); // ATTENTE ACTIVE
+				sema_post(&empty);
 
 			while(rand() > RAND_MAX/10000);
 		} else { // Si on a produit le nombre max d'éléments, on libère juste le mutex
-			// pthread_mutex_unlock(&mutex); // POSIX
-			mut_unlock(&mutex); // ATTENTE ACTIVE
+			mut_unlock(&mutex);
 			
 			// Afin de ne bloquer aucun producteur
-			// sem_post(&empty); // POSIX
-			sema_post(&empty); // ATTENTE ACTIVE
+			sema_post(&empty);
 		}
 	}
 	return (NULL);
@@ -128,37 +115,31 @@ void* producer(){
 void* consumer(){
 	while(elem_cons<MAX){ // Tant qu'on a pas consommé le nombre max d'éléments
 		// Attente d'une place remplie
-		// sem_wait(&full); // POSIX
-		sema_wait(&full); // ATTENTE ACTIVE
+		sema_wait(&full);
 		
 		// Section critique
-		// pthread_mutex_lock(&mutex); // POSIX
-		mut_lock(&mutex); // ATTENTE ACTIVE
+		mut_lock(&mutex);
 		
 		if(elem_cons<MAX){ // Si on a consommé moins que le nombre max d'éléments
 			remove_item();
 			elem_cons++;
 			
 			// Fin section critique
-			// pthread_mutex_unlock(&mutex); // POSIX
-			mut_unlock(&mutex); // ATTENTE ACTIVE
+			mut_unlock(&mutex);
 		
 			// Il y a une place libre en plus
-			// sem_post(&empty); // POSIX
-			sema_post(&empty); // ATTENTE ACTIVE
+			sema_post(&empty);
 			
 			if(elem_cons >= MAX)
-				// sem_post(&full); // POSIX
-				sema_post(&full); // ATTENTE ACTIVE
+				sema_post(&full);
 			
 			while(rand() > RAND_MAX/10000);
-		} else { // Si on a consommé le nombre max d'éléments, on libère juste le mutex
-			// pthread_mutex_unlock(&mutex); // POSIX
-			mut_unlock(&mutex); // ATTENTE ACTIVE
+		} else {
+		    // Si on a consommé le nombre max d'éléments, on libère juste le mutex
+			mut_unlock(&mutex);
 			
 			// Afin de ne bloquer aucun consommateur
-			// sem_post(&full); // POSIX
-			sema_post(&full); // ATTENTE ACTIVE
+			sema_post(&full);
 		}
 	}
 	return (NULL);
@@ -174,13 +155,7 @@ int main(int argc, char *argv[]){
 	
 	int consommateurs = atoi(argv[1])/2; // Nombre de consommateurs
 	if(atoi(argv[1])%2) consommateurs++;
-	
-	/* POSIX */ /*
-	pthread_mutex_init(&mutex, NULL);
-	sem_init(&empty, 0 , N);  // buffer vide
-	sem_init(&full, 0 , 0);   // buffer vide */
-	
-	/* ATTENTE ACTIVE */
+
 	mut_init(&mutex);
 	sema_init(&empty, N); // buffer vide
 	sema_init(&full, 0); // buffer vide
@@ -211,11 +186,7 @@ int main(int argc, char *argv[]){
         if(err!=0)
             error(err,"pthread_join");
 	}
-	
-	/* POSIX */ /*
-	pthread_mutex_destroy(&mutex); // Libération de la mémoire
-	sem_destroy(&empty);
-	sem_destroy(&full); */
+
 	
 	printf("%d, %d\n", elem_prod, elem_cons);
 	
