@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 	pthread_t thread[N];
 	
 	// sema_init(&semp, 0);
-	mut_init(&mute);
+	mut_init(&mute, 0);
 	
 	int err;
 	for (int i=0; i<N; i++) { // On crée les threads

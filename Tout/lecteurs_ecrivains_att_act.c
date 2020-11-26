@@ -7,7 +7,6 @@
  * Gauthier Arnold et Volders Maxime
  **************************************/
 
-#include <semaphore.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,11 +20,11 @@
 #define MAX_LECT 2560
 #define MAX_WRITE 640
 
-struct mut mutex_writecount;
-struct mut mutex_readcount;
-struct mut mutex_lect;
-struct sema wsem; // accès à la semaphore writer
-struct sema rsem; // accès à la semaphore reader
+mut mutex_writecount;
+mut mutex_readcount;
+mut mutex_lect;
+sema wsem; // accès à la semaphore writer
+sema rsem; // accès à la semaphore reader
 
 int readcount=0; // nombre de readers
 int writecount=0; // nombre d'écrivains
@@ -122,15 +121,13 @@ int main(int argc, char *argv[]){
 	int err;
 	
 	if(argc != 2) return EXIT_FAILURE;
-	
 	int ecrivains = atoi(argv[1])/2; // Nombre de ecrivains
-	
 	int lecteurs = atoi(argv[1])/2; // Nombre de lecteurs
 	if(atoi(argv[1])%2) lecteurs++;
 
-	mut_init(&mutex_writecount);
-	mut_init(&mutex_readcount);
-	mut_init(&mutex_lect);
+	mut_init(&mutex_writecount, 0);
+	mut_init(&mutex_readcount, 0);
+	mut_init(&mutex_lect, 0);
 	sema_init(&wsem, 1);
 	sema_init(&rsem, 1);
 	

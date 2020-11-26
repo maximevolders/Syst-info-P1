@@ -7,7 +7,6 @@
  * Gauthier Arnold et Volders Maxime
  **************************************/
 
-#include <semaphore.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,9 +22,9 @@
 
 int buffer[N]; // On initialise le buffer (tous ses éléments valent 0)
 
-struct mut mutex;
-struct sema empty;
-struct sema full;
+mut mutex;
+sema empty;
+sema full;
 
 int elem_prod=0; // Le nombre total d'éléments produits
 int elem_cons=0; // Le nombre total d'éléments consommés
@@ -156,7 +155,7 @@ int main(int argc, char *argv[]){
 	int consommateurs = atoi(argv[1])/2; // Nombre de consommateurs
 	if(atoi(argv[1])%2) consommateurs++;
 
-	mut_init(&mutex);
+	mut_init(&mutex, 0);
 	sema_init(&empty, N); // buffer vide
 	sema_init(&full, 0); // buffer vide
 	

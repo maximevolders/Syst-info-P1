@@ -15,8 +15,8 @@
 // Structure définie dans le fichier test_and_test_and_set.h
 #include "test_and_test_and_set.h"
 
-void mut_init(mut* mu){
-	mu->ver=0;
+void mut_init(mut* mu, unsigned int val){
+	mu->ver=val;
 }
 
 int mut_testAndSet(mut* mu){

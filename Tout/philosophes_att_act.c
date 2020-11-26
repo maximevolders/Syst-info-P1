@@ -88,7 +88,7 @@ int main ( int argc, char *argv[])
         id[i]=i;
 
     for (i = 0; i < nbag; i++) {// Initialise et Unlock les mutex
-        mut_init(bag.baguette+i);
+        mut_init(bag.baguette+i, 0);
     }
 
     for (i = 0; i < PHILOSOPHES; i++) { // On amorce les thread pour les philosophes
