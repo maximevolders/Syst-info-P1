@@ -22,34 +22,34 @@
  */
 void sema_init(sema *s, unsigned int value){
 	s->val=value;
-	mut_init(&(s->semlock), 0);
-	mut_init(&(s->ver), 1);
+	mut_init(&(s->semlock), 1);
+	mut_init(&(s->count), 0);
 }
 
 /* Fonction de wait de la sémaphore.
  * Arguments: pointeur vers la sémaphore.
  */
 void sema_wait(sema *s){
-	mut_lock(&(s->semlock)); // début section critique
+	mut_lock(&(s->count)); // début section critique
 	s->val = (s->val)-1;
 
-	if((s->val)<0){ // On lock la sémaphore si la valeur est <= 0 (si val = 1, le premier lock va passer et verouiller les autres)
-		mut_unlock(&(s->semlock)); // fin de section critique
-		mut_lock(&(s->ver)); // Ajout de thread dans la queue
-	} else {
-		mut_unlock(&(s->semlock)); // fin de section critique
+	if((s->val)<0){ // On lock la sémaphore si la valeur est < 0
+		mut_unlock(&(s->count)); // fin de section critique
+		mut_lock(&(s->semlock)); // Ajout de thread dans la queue
 	}
+	mut_unlock(&(s->count)); // fin de section critique
 }
 
 /* Fonction de post de la sémaphore.
  * Arguments: pointeur vers la sémaphore.
  */
 void sema_post(sema *s){
-	mut_lock(&(s->semlock)); // début de section critique
+	mut_lock(&(s->count)); // début de section critique
 	s->val = (s->val)+1;
 	
 	if((s->val)<=0){
-		mut_unlock(&(s->ver)); // On unlock la sémaphore, permettant a un thread dans la queue de continuer son exécution
+		mut_unlock(&(s->semlock)); // On unlock la sémaphore, permettant a un thread dans la queue de continuer son exécution
+	} else {
+		mut_unlock(&(s->count)); // fin de section critique
 	}
-	mut_unlock(&(s->semlock)); // fin de section critique
 }

@@ -1,12 +1,12 @@
-#include "test_and_test_and_set.h"
-
 #ifndef SEMACT
 #define SEMACT
 
+#include "test_and_test_and_set.h"
+
 typedef struct sema{
 	volatile int val; // Valeur de la sémaphore
-	mut ver; // Verrou de la sémaphore, bloquant les threads lors de l'appel wait()
-	mut semlock;
+	mut count;
+	mut semlock; // Verrou de la sémaphore, bloquant les threads lors de l'appel wait()
 }sema;
 
 void sema_init(sema *s, unsigned int value);
