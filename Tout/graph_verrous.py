@@ -44,7 +44,7 @@ plt.errorbar(threads3, mean3, yerr=std3, fmt='-o', color="tab:green")
     
 #Modification des limites des axes du graphiques   
 plt.xlim(0,8.5)
-plt.ylim(0,1.2)
+plt.ylim(0,5)
      
 #Légende des axes, titre du graphique, grille, légende du graphique
 plt.xlabel('# threads')
