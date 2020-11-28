@@ -33,14 +33,14 @@ threads3 = data3["thread"].unique()
 fig1 = plt.plot()
     
 #Plot de la moyenne et de l'erreur
-plt.plot(threads, mean, color="blue", linewidth=1.0, linestyle="-")
-plt.errorbar(threads, mean, yerr=std, fmt='-o', color="blue")
+plt.plot(threads, mean, color="tab:blue", linewidth=1.0, linestyle="-")
+plt.errorbar(threads, mean, yerr=std, fmt='-o', color="tab:blue")
     
-plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
-plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+plt.plot(threads2, mean2, color="tab:red", linewidth=1.0, linestyle="-")
+plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="tab:red")
         
-plt.plot(threads3, mean3, color="green", linewidth=1.0, linestyle="-")
-plt.errorbar(threads3, mean3, yerr=std3, fmt='-o', color="green")
+plt.plot(threads3, mean3, color="tab:green", linewidth=1.0, linestyle="-")
+plt.errorbar(threads3, mean3, yerr=std3, fmt='-o', color="tab:green")
     
 #Modification des limites des axes du graphiques   
 plt.xlim(0,8.5)
@@ -49,7 +49,7 @@ plt.ylim(0,1.2)
 #Légende des axes, titre du graphique, grille, légende du graphique
 plt.xlabel('# threads')
 plt.ylabel('Temps [s]')
-plt.title("Performance des verrous")
+plt.title("Comparaison du temps d'exécution des différents verrous par\n attente active en fonction du nombre de threads")
 plt.grid(True)
 plt.legend(['Test-and-set','Test-and-test-and-set','Backoff-test-and-test-and-set'], loc = 'upper left')
   

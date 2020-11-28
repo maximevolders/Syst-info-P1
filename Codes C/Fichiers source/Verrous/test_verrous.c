@@ -30,7 +30,7 @@ void error(int err, char *msg) {
 }
 
 void* test(){
-	for(int i=0; i<64/N; i++){
+	for(int i=0; i<6400/N; i++){
 		// sema_wait(&semp); // test semaphore
 		mut_lock(&mute); // test mutex
 		while(rand() > RAND_MAX/1000);

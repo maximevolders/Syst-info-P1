@@ -34,12 +34,12 @@ def philosophes():
     fig1 = plt.figure()
     
     #Plot de la moyenne et de l'erreur concernant les verrous POSIX
-    plt.plot(threads1, mean1, color="blue", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="blue")
+    plt.plot(threads1, mean1, color="tab:blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="tab:blue")
     
     #Plot de la moyenne et de l'erreur concernant les verrous par attente active
-    plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    plt.plot(threads2, mean2, color="tab:red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="tab:red")
     
     #Modification des limites des axes du graphiques
     plt.xlim(0,8.5)
@@ -48,7 +48,7 @@ def philosophes():
     #Légende des axes, titre du graphique, grille, légende du graphique
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
-    plt.title("Problème des philosophes")
+    plt.title("Comparaison du temps d'exécution du problème des philosophes\n en fonction du nombre de threads")
     plt.grid(True)
     plt.legend(['POSIX','Attente active'], loc = 'upper left')
     
@@ -74,18 +74,18 @@ def prod_cons():
     
     fig1 = plt.figure()
     
-    plt.plot(threads1, mean1, color="blue", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="blue")
+    plt.plot(threads1, mean1, color="tab:blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="tab:blue")
     
-    plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    plt.plot(threads2, mean2, color="tab:red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="tab:red")
     
     plt.xlim(0,8.5)
     plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
-    plt.title("Problème des producteurs et consommateurs")
+    plt.title("Comparaison du temps d'exécution du problème des producteurs \net des consommateurs en fonction du nombre de threads")
     plt.grid(True)
     plt.legend(['POSIX','Attente active'], loc = 'upper left')
     
@@ -110,18 +110,18 @@ def read_write():
     
     fig1 = plt.figure()
     
-    plt.plot(threads1, mean1, color="blue", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="blue")
+    plt.plot(threads1, mean1, color="tab:blue", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads1, mean1, yerr=std1, fmt='-o', color="tab:blue")
     
-    plt.plot(threads2, mean2, color="red", linewidth=1.0, linestyle="-")
-    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="red")
+    plt.plot(threads2, mean2, color="tab:red", linewidth=1.0, linestyle="-")
+    plt.errorbar(threads2, mean2, yerr=std2, fmt='-o', color="tab:red")
     
     plt.xlim(0,8.5)
     plt.ylim(0,np.max(data2["time"])+1)
     
     plt.xlabel('# threads')
     plt.ylabel('Temps [s]')
-    plt.title("Problème des lecteurs et écrivains")
+    plt.title("Comparaison du temps d'exécution du problème des lecteurs\n et des écrivains en fonction du nombre de threads")
     plt.grid(True)
     plt.legend(['POSIX','Attente active'], loc = 'upper left')
     
