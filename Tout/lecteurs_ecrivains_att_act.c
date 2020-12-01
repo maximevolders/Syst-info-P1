@@ -1,7 +1,7 @@
 /**************************************
- * lecteurs_ecrivains.c
+ * lecteurs_ecrivains_att_act.c
  *
- * Programme du problème des lecteurs et écrivains
+ * Programme du problème des lecteurs et écrivains avec les mutex et sémpahores par attente active
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime
@@ -16,6 +16,9 @@
 #include <string.h>
 #include "semaphore.h"
 #include "test_and_test_and_set.h"
+
+#include <time.h>
+#include <sys/time.h>
 
 #define MAX_LECT 2560
 #define MAX_WRITE 640
@@ -81,7 +84,6 @@ void* reader(){
 	while(nombre_lect<MAX_LECT){
 		// ne sera jamais > 1
 		sema_wait(&rsem);
-
 		mut_lock(&mutex_readcount);
 		
 		// section critique
@@ -91,11 +93,12 @@ void* reader(){
 		}
 
 		mut_unlock(&mutex_readcount);
-
 		sema_post(&rsem);
+		
 		
 		if(nombre_lect+readcount-1<MAX_LECT){
 			// 1 reader rsem 1
+			// read_database();
 			read_database();
 
 			mut_lock(&mutex_lect);
@@ -104,6 +107,7 @@ void* reader(){
 			nombre_lect++;
 			mut_unlock(&mutex_lect);
 		}
+		
 		mut_lock(&mutex_readcount);
 		
 		// section critique

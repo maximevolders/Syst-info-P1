@@ -1,3 +1,12 @@
+/**************************************
+ * semaphore.h
+ *
+ * Header du fichier semaphore.c
+ * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
+ *
+ * Gauthier Arnold et Volders Maxime
+ **************************************/
+
 #ifndef SEMACT
 #define SEMACT
 
@@ -5,7 +14,7 @@
 
 typedef struct sema{
 	volatile int val; // Valeur de la sémaphore
-	mut count;
+	mut count; // Mutex protégeant "val"
 	mut semlock; // Verrou de la sémaphore, bloquant les threads lors de l'appel wait()
 }sema;
 

@@ -1,7 +1,7 @@
 /**************************************
- * producteurs_consommateurs.c
+ * producteurs_consommateurs_att_act.c
  *
- * Programme du problème des producteurs et consommateurs
+ * Programme du problème des producteurs et consommateurs avec les mutex et sémpahores par attente active
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime

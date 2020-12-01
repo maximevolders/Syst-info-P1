@@ -22,7 +22,7 @@ def philosophes():
     std1 = data1.groupby(["thread"]).std()["time"]
     threads1 = data1["thread"].unique()
     
-    #import data attente active
+    #Import data attente active
     data2 = pd.read_csv("mesures1AttAct.csv")
     
     #Calcul de la moyenne par thread, l'écart type par thread et du nombre de threads attente active

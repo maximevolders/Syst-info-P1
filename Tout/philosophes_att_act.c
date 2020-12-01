@@ -1,7 +1,7 @@
 /**************************************
- * philosophes.c
+ * philosophes_att_act.c
  *
- * Programme du problème des philosophes
+ * Programme du problème des philosophes avec les mutex par attente active
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime

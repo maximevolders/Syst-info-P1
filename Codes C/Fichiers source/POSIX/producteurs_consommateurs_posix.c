@@ -1,7 +1,7 @@
 /**************************************
- * producteurs_consommateurs.c
+ * producteurs_consommateurs_posix.c
  *
- * Programme du problème des producteurs et consommateurs
+ * Programme du problème des producteurs et consommateurs avec les mutex et sempahores POSIX
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime

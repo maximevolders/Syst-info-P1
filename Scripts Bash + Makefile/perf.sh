@@ -1,4 +1,7 @@
 #!/bin/bash
+# Mesures1 = philosophes
+# Mesures2 = producteurs_consommateurs
+# Mesures3 = lecteurs_ecrivains
 
 echo "thread,time" > mesures1posix.csv
 echo "thread,time" > mesures2posix.csv
@@ -7,9 +10,9 @@ echo "thread,time" > mesures3posix.csv
 echo "thread,time" > mesures1AttAct.csv
 echo "thread,time" > mesures2AttAct.csv
 echo "thread,time" > mesures3AttAct.csv
-for j in {1..8};
+for j in {1..8}; # Nombre de threads = #coeurs*2
 do
-    for i in {1..5};
+    for i in {1..5}; # 5 essais par nombre de threads
     do
 		make -s
         echo -n "$j," >> mesures1posix.csv

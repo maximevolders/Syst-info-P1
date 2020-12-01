@@ -1,3 +1,12 @@
+/**************************************
+ * backoff_test_and_test_and_set.c
+ *
+ * Programme bonus du verrou backoff-test-and-test-and-set
+ * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
+ *
+ * Gauthier Arnold et Volders Maxime
+ **************************************/
+
 #include <stdio.h>
 #include <errno.h>
 #include <pthread.h>

@@ -1,7 +1,7 @@
 /**************************************
- * lecteurs_ecrivains.c
+ * lecteurs_ecrivains_posix.c
  *
- * Programme du problème des lecteurs et écrivains
+ * Programme du problème des lecteurs et écrivains avec les mutex et sémaphores par attente active
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime
@@ -15,6 +15,9 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+
+#include <time.h>
+#include <sys/time.h>
 
 #define MAX_LECT 2560
 #define MAX_WRITE 640
@@ -96,7 +99,7 @@ void* reader(){
 
         if(nombre_lect+readcount-1<MAX_LECT){
             // 1 reader rsem 1
-            read_database();
+			read_database();
 
             pthread_mutex_lock(&mutex_lect);
 

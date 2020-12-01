@@ -1,5 +1,5 @@
 /**************************************
- * test_verrou.c
+ * test_verrous.c
  *
  * Programme de tests des différents verrous par attente active
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques

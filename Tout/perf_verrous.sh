@@ -1,11 +1,14 @@
 #!/bin/bash
+# tas = test_and_set
+# tatas = test_and_test_and_set
+# btatas = backoff_test_and_test_and_set
 
 echo "thread,time" > mesures_tas.csv
 echo "thread,time" > mesures_tatas.csv
 echo "thread,time" > mesures_btatas.csv
-for j in {1..8};
+for j in {1..8}; # Nombre de threads = #coeurs*2
 do
-    for i in {1..5};
+    for i in {1..5}; # 5 essais par nombre de threads
     do
 		make -s
         echo -n "$j," >> mesures_tas.csv

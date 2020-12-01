@@ -1,7 +1,7 @@
 /**************************************
- * philosophes.c
+ * philosophes_posix.c
  *
- * Programme du problème des philosophes
+ * Programme du problème des philosophes avec les mutex POSIX
  * Dans le cadre du projet 1 du cours LINFO1225 - Systèmes informatiques
  *
  * Gauthier Arnold et Volders Maxime
